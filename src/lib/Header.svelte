@@ -21,7 +21,38 @@
         justify-content: space-between;
     }
 
+    #login-section {
+        display: flex;
+        align-items: center;
+    }
+
+    #signup-button, #login-button {
+        display: block;
+        border-radius: 0.25em;
+        border: var(--light-accent-color) 2px solid;
+
+        width: 4.5em;
+        --height: 1.75em;
+
+        height: var(--height);
+
+        text-align: center;
+        line-height: var(--height);
+    }
+
     #signup-button {
         background-color: white;
+        color: var(--light-accent-color);
+
+        margin-right: 1.25em;
+    }
+
+    #login-button {
+        background-color: var(--light-accent-color);
+        color: var(--light-text-color);
+    }
+
+    a {
+        text-decoration: none;
     }
 </style>

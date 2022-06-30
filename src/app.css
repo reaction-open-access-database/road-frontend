@@ -2,4 +2,15 @@
 
 :root {
     font-family: 'Poppins', sans-serif;
+
+    --light-accent-color: #3E84E0;
+    --dark-accent-color: #0032A0;
+
+    --light-text-color: #FFFFFF;
+    --dark-text-color: #000000;
+}
+
+* {
+    margin: 0;
+    padding: 0;
 }
