@@ -7,7 +7,7 @@
         <img src="/logo.svg" alt="ROAD Logo">
     </a>
 
-    {$page_name}
+    <b>{$page_name}</b>
 
     <div id="login-section">
         <a href="/signup" id="signup-button">Sign Up</a>
@@ -19,6 +19,7 @@
     header {
         display: flex;
         justify-content: space-between;
+        align-items: center;
     }
 
     #login-section {
