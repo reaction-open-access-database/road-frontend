@@ -8,9 +8,21 @@
 
     --light-text-color: #FFFFFF;
     --dark-text-color: #000000;
+
+    --light-grey: #EEEEEE;
+    --medium-grey: #BBBBBB;
+    --dark-grey: #999999;
+
+    --light-background-color: #FFFFFF;
+    --dark-background-color: #444444;
 }
 
 * {
     margin: 0;
     padding: 0;
+}
+
+button {
+    cursor: pointer;
+    border: none;
 }
