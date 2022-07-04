@@ -37,11 +37,20 @@
 
         --border-radius: 10px;
         border-radius: var(--border-radius);
+
+        padding-bottom: 30px;
     }
 
     #search-button {
         background-color: var(--dark-accent-color);
         color: var(--light-text-color);
+
+        font-size: 1.4em;
+        font-weight: bold;
+
+        padding: 0.5em 1em;
+
+        border-radius: 0.3em;
     }
 
     #options {
