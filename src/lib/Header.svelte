@@ -7,7 +7,7 @@
         <img src="/logo.svg" alt="ROAD Logo">
     </a>
 
-    <b>{$page_name}</b>
+    <b id="page-title">{$page_name}</b>
 
     <div id="login-section">
         <a href="/signup" id="signup-button">Sign Up</a>
@@ -20,6 +20,12 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
+
+    #page-title {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     #login-section {
