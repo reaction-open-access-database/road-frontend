@@ -2,8 +2,8 @@
     import SearchTree from "./searchtree/SearchTree.svelte";
 
     let search_options = [
-        {name: 'hi', operators: ['=']},
-        {name: 'ho', operators: ['>', '<', '>=', '<=']},
+        {name: 'hi', operators: ['='], input: 'structure'},
+        {name: 'ho', operators: ['>', '<', '>=', '<='], input: 'integer'},
     ]
 </script>
 

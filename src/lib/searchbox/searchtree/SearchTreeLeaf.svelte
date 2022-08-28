@@ -1,7 +1,8 @@
 <script lang="ts">
-    export let search_options = [];
-
+    import Input from "./Input.svelte";
     import Dropdown from "./Dropdown.svelte";
+
+    export let search_options = [];
 
     let selected_name = null;
     let selected_operator = null;
@@ -15,10 +16,8 @@
 
     {#if selected != null}
         <Dropdown bind:selected={selected_operator} options={selected.operators} width="4em" />
+        <Input type={selected.input} />
     {/if}
-    <div class="value">
-
-    </div>
 </div>
 
 <style>
