@@ -1,24 +1,50 @@
 <script lang="ts">
-    export let selected = null;
+    export let selected;
     export let options = [];
+    export let height = "2em";
+    export let width = "10em";
 
     let visible = false;
+    let active;
+    let contents;
+
+    // If there is only one option available,
+    // don't bother asking the user to select one
+    $: if (options.length === 1) {
+        active = false;
+        selected = options[0];
+    } else {
+        active = true;
+        selected = null;
+    }
 
     function display_menu() {
         visible = !visible;
     }
 
+    // When an option is selected, hide the dropdown
     $: {
         selected; // Bind to whenever the selected option changes.
         visible = false;
     }
+
+    // If no option has been selected, prompt the user to select one
+    $: if (selected === null) {
+        contents = "Choose Option";
+    } else {
+        contents = selected;
+    }
 </script>
 
-<div id="dropdown">
-    <a on:click={display_menu} id="toggle-button">
-        <p>{#if selected === null} Choose Option {:else} {selected} {/if}</p>
-        <p>▼</p>
-    </a>
+<div id="dropdown" style="--total-button-height: {height}; --total-dropdown-width: {width}">
+    {#if active}
+        <a on:click={display_menu} id="toggle-button">
+            <p>{contents}</p>
+            <p>▼</p>
+        </a>
+    {:else}
+        <p id="single-option">{contents}</p>
+    {/if}
 
 {#if visible}
     <div id="menu">
@@ -32,16 +58,15 @@
 <style>
     #dropdown {
         --button-padding: 0.5em;
-        --button-height: 1em;
-        --dropdown-width: 10em;
         --border-width: 1px;
-        --total-button-height: calc(var(--button-height) + 2 * var(--button-padding) + 2 * var(--border-width));
-        --total-dropdown-width: calc(var(--dropdown-width) + 2 * var(--button-padding) + 2 * var(--border-width));
+        --button-height: calc(var(--total-button-height) - 2 * var(--button-padding) - 2 * var(--border-width));
+        --dropdown-width: calc(var(--total-dropdown-width) - 2 * var(--button-padding) - 2 * var(--border-width));
 
         position: relative;
         height: var(--total-button-height);
         width: var(--total-dropdown-width);
     }
+
     #toggle-button {
         position: absolute;
         top: 0;
@@ -56,6 +81,7 @@
         display: flex;
         justify-content: space-between;
     }
+
     #menu {
         display: flex;
         flex-direction: column;
@@ -73,6 +99,17 @@
     }
 
     #toggle-button > * {
-        line-height: 1em;
+        line-height: var(--button-height);
+    }
+
+    #single-option {
+        width: var(--dropdown-width);
+        line-height: var(--button-height);
+        padding: var(--button-padding);
+
+        background-color: var(--medium-light-grey);
+        border: var(--border-width) solid var(--medium-grey);
+
+        text-align: center;
     }
 </style>
