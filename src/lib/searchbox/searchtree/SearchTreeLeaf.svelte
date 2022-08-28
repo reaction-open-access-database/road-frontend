@@ -4,11 +4,10 @@
     import Dropdown from "./Dropdown.svelte";
 
     let selected_name = null;
-    $: selected = search_options.find(option => option.name == selected_name);
-
+    let selected_operator = null;
     let dropdown_options = search_options.map(option => option.name);
 
-    let selected_operator = null;
+    $: selected = search_options.find(option => option.name == selected_name);
 </script>
 
 <div id="search-tree-leaf">

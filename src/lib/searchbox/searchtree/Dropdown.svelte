@@ -28,23 +28,15 @@
         contents = selected;
     }
 
-    function mouse_enter() {
-        visible = true;
-    }
-
-    function mouse_leave() {
-        visible = false;
-    }
-
     function set_selected(option) {
         selected = option;
         visible = false;
     }
 </script>
 
-<div id="dropdown" style="--total-button-height: {height}; --total-dropdown-width: {width}" on:mouseenter={mouse_enter} on:mouseleave={mouse_leave}>
+<div id="dropdown" style="--total-button-height: {height}; --total-dropdown-width: {width}" on:mouseenter={() => {visible = true}} on:mouseleave={() => {visible = false}}>
     {#if active}
-        <a id="toggle-button">
+        <a id="toggle-button" on:click={() => {visible = !visible}}>
             <p>{contents}</p>
             <p>▼</p>
         </a>
@@ -96,6 +88,7 @@
         left: 0;
         background: var(--light-background-color);
         width: var(--total-dropdown-width);
+        z-index: 10;
     }
 
     #menu > button {
