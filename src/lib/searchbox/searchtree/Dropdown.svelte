@@ -24,6 +24,7 @@
 
     // When an option is selected, hide the dropdown
     $: {
+        active;
         selected; // Bind to whenever the selected option changes.
         visible = false;
     }
