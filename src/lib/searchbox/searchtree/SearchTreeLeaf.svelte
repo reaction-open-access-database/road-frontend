@@ -15,7 +15,7 @@
     <Dropdown bind:selected={selected_name} options={dropdown_options} />
 
     {#if selected != null}
-        <Dropdown bind:selected={selected_operator} options={selected.operators} />
+        <Dropdown bind:selected={selected_operator} options={selected.operators} width="4em" />
     {/if}
     <div class="value">
 

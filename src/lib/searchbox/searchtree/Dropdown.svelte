@@ -14,10 +14,6 @@
     // don't bother asking the user to select one
     $: active = options.length !== 1;
 
-    function display_menu() {
-        visible = !visible;
-    }
-
     // When an option is selected, hide the dropdown
     $: {
         active;
@@ -31,11 +27,24 @@
     } else {
         contents = selected;
     }
+
+    function mouse_enter() {
+        visible = true;
+    }
+
+    function mouse_leave() {
+        visible = false;
+    }
+
+    function set_selected(option) {
+        selected = option;
+        visible = false;
+    }
 </script>
 
-<div id="dropdown" style="--total-button-height: {height}; --total-dropdown-width: {width}">
+<div id="dropdown" style="--total-button-height: {height}; --total-dropdown-width: {width}" on:mouseenter={mouse_enter} on:mouseleave={mouse_leave}>
     {#if active}
-        <a on:click={display_menu} id="toggle-button">
+        <a id="toggle-button">
             <p>{contents}</p>
             <p>▼</p>
         </a>
@@ -43,10 +52,10 @@
         <p id="single-option">{contents}</p>
     {/if}
 
-{#if visible}
+{#if visible && active}
     <div id="menu">
         {#each options as option}
-            <button on:click={() => {selected = option}}>{option}</button>
+            <button on:click={() => set_selected(option)}>{option}</button>
         {/each}
     </div>
 {/if}
