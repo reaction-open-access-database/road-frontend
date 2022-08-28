@@ -4,19 +4,15 @@
     export let height = "2em";
     export let width = "10em";
 
+    selected = options[0];
+
     let visible = false;
     let active;
     let contents;
 
     // If there is only one option available,
     // don't bother asking the user to select one
-    $: if (options.length === 1) {
-        active = false;
-        selected = options[0];
-    } else {
-        active = true;
-        selected = null;
-    }
+    $: active = options.length !== 1;
 
     function display_menu() {
         visible = !visible;
