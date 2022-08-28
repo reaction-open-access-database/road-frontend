@@ -10,6 +10,7 @@
     --dark-text-color: #000000;
 
     --light-grey: #EEEEEE;
+    --medium-light-grey: #DDDDDD;
     --medium-grey: #BBBBBB;
     --dark-grey: #999999;
 
@@ -25,4 +26,8 @@
 button {
     cursor: pointer;
     border: none;
+}
+
+a {
+    cursor: pointer;
 }
