@@ -4,7 +4,7 @@
     export let height = "2em";
     export let width = "10em";
 
-    selected = options[0];
+    $: selected = options[0];
 
     let visible = false;
     let active;
