@@ -1,6 +1,14 @@
 <script lang="ts">
     import SearchTreeLeaf from "./SearchTreeLeaf.svelte";
 
+    const MODIFIER_TYPES = [
+        "and",
+        "or",
+        "not",
+    ]
+
+    let current_modifier_index = 0;
+
     export let child_nodes;
     export let search_options;
 
@@ -12,6 +20,21 @@
     function get_node_position(node) {
         let rect = node.children[0].getBoundingClientRect();
         return (rect.top + rect.bottom) / 2;
+    }
+
+    function add_child_leaf_node() {
+        child_nodes.push({type: "leaf", data: {}});
+        child_nodes = child_nodes;
+    }
+
+    function add_child_modifier_node() {
+        child_nodes.push({type: "modifier", data: []});
+        child_nodes = child_nodes;
+    }
+
+    function change_modifier_type() {
+        current_modifier_index++;
+        current_modifier_index %= MODIFIER_TYPES.length;
     }
 
     $: if (children.length >= 1) {
@@ -28,8 +51,8 @@
 </script>
 
 <div class="parent">
-    <div class="parent-node" style="--parent-node-top: {parent_node_top}">
-        AND
+    <div class="parent-node" style="--parent-node-top: {parent_node_top}" on:click={change_modifier_type}>
+        {MODIFIER_TYPES[current_modifier_index].toUpperCase()}
     </div>
     <div class="vertical-line" style="--vertical-line-top: {vertical_line_top}; --vertical-line-height: {vertical_line_height}"></div>
     {#each child_nodes as child_node, i}
@@ -79,6 +102,8 @@
         text-align: center;
 
         z-index: 1;
+
+        cursor: pointer;
     }
 
     .vertical-line {
