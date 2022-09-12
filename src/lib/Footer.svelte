@@ -1,4 +1,10 @@
-<footer>
+<script lang="ts">
+    let footer_height;
+</script>
+
+<div id="footer-spacer" style="height: {footer_height}px"></div>
+
+<footer bind:clientHeight={footer_height}>
     <div class="column">
         <a href="/about">About</a>
         <a href="">What is ROAD?</a> <!-- TODO: href -->
