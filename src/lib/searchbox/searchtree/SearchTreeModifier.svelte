@@ -1,5 +1,6 @@
 <script lang="ts">
     import SearchTreeLeaf from "./SearchTreeLeaf.svelte";
+    import SearchTreeModifier from "./SearchTreeModifier.svelte";
 
     const MODIFIER_TYPES = [
         "and",
@@ -12,10 +13,37 @@
     export let child_nodes;
     export let search_options;
 
+    export function create_query() {
+        let subqueries = child_elements
+            .map((child) => child.create_query())
+            .filter((query) => query != null);
+        let modifier = MODIFIER_TYPES[current_modifier_index];
+
+        // If there are no subqueries, there's no point having the modifier
+        if (subqueries.length == 0) {
+            return null;
+        }
+
+        // If there is only one AND or OR subquery, we don't need to use the modifier
+        if (subqueries.length == 1 && (modifier == "and" || modifier == "or")) {
+            return subqueries[0];
+        }
+
+        return {
+            type: 'modifier',
+            query: {
+                type: modifier,
+                queries: subqueries,
+            }
+        };
+    }
+
     let children = [];
+    let child_elements = [];
     let vertical_line_top = "0px";
     let vertical_line_height = "0px";
     let parent_node_top = "0px";
+    let parent;
 
     function get_node_position(node) {
         let rect = node.children[0].getBoundingClientRect();
@@ -47,11 +75,18 @@
         vertical_line_top = top.toString() + "px";
         vertical_line_height = (bottom - top).toString() + "px";
         parent_node_top = ((top + bottom) / 2).toString() + "px";
+    } else {
+        try {
+            let rect = parent.getBoundingClientRect();
+            parent_node_top = rect.top.toString() + "px";
+        } catch {
+
+        }
     }
 </script>
 
-<div class="parent">
-    <div class="parent-node" style="--parent-node-top: {parent_node_top}" on:click={change_modifier_type}>
+<div class="parent" bind:this={parent}>
+    <div class="parent-node" style="--parent-node-top: {parent_node_top}" on:click={add_child_leaf_node}>
         {MODIFIER_TYPES[current_modifier_index].toUpperCase()}
     </div>
     <div class="vertical-line" style="--vertical-line-top: {vertical_line_top}; --vertical-line-height: {vertical_line_height}"></div>
@@ -59,7 +94,11 @@
         <div class="child" bind:this={children[i]}>
             <div class="child-line"></div>
             <div class="child-node">
-                <SearchTreeLeaf {...child_node} {search_options} />
+                {#if child_node.type === "modifier"}
+                    <SearchTreeModifier child_nodes={child_node.data} {search_options} bind:this={child_elements[i]} />
+                {:else if child_node.type === "leaf"}
+                    <SearchTreeLeaf {search_options} bind:this={child_elements[i]} />
+                {/if}
             </div>
         </div>
     {/each}
@@ -67,7 +106,7 @@
 
 <style>
     .parent {
-        --horizontal-child-line-length: 25px;
+        --horizontal-child-line-length: 35px;
         --child-line-width: 1px;
         --child-line-color: black;
     }

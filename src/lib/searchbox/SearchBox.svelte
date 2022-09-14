@@ -10,6 +10,7 @@
     }
 
     let search_type: SearchType = SearchType.Substance;
+    let search_component;
 </script>
 
 <div id="search-box">
@@ -19,15 +20,15 @@
         <button class="option" on:click={() => search_type = SearchType.Retrosynthesis}>Retrosynthesis</button>
     </div>
 
-    <svelte:component this={search_type} />
+    <svelte:component this={search_type} bind:this={search_component} />
 
-    <button id="search-button">Search</button>
+    <button id="search-button" on:click={() => search_component.search()}>Search</button>
 </div>
 
 <style>
     #search-box {
         border: var(--medium-grey) 1px solid;
-        width: 50vw;
+        min-width: 50vw;
 
         display: flex;
         flex-direction: column;

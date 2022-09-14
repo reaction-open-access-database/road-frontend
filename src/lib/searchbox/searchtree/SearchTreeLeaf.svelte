@@ -4,6 +4,13 @@
 
     export let search_options = [];
 
+    export function create_query() {
+        return {
+            type: 'quantity',
+            query: selected.get_query(),
+        };
+    }
+
     let selected_name = null;
     let selected_operator = null;
     let dropdown_options = search_options.map(option => option.name);
