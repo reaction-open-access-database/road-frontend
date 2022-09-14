@@ -108,11 +108,11 @@
 <style>
     .parent {
         --parent-node-size: 2rem;
-        --horizontal-child-line-length: 35px;
+        --horizontal-child-line-length: 0.75rem;
         --child-line-thickness: 1px;
         --child-line-color: black;
 
-        --modifier-gap: calc(var(--parent-node-size) + 0.75rem);
+        --modifier-gap: calc(var(--parent-node-size) + var(--horizontal-child-line-length));
         padding-left: var(--modifier-gap);
     }
 
