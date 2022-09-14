@@ -86,10 +86,11 @@
 </script>
 
 <div class="parent" bind:this={parent}>
-    <div class="parent-node" style="--parent-node-top: {parent_node_top}" on:click={add_child_leaf_node}>
+    <div class="parent-node" style="--parent-node-top: {parent_node_top}" on:click={change_modifier_type}>
         {MODIFIER_TYPES[current_modifier_index].toUpperCase()}
     </div>
     <div class="vertical-line" style="--vertical-line-top: {vertical_line_top}; --vertical-line-height: {vertical_line_height}"></div>
+    <div class="horizontal-line" style="--horizontal-line-top: {parent_node_top}"></div>
     {#each child_nodes as child_node, i}
         <div class="child" bind:this={children[i]}>
             <div class="child-line"></div>
@@ -106,9 +107,13 @@
 
 <style>
     .parent {
+        --parent-node-size: 2rem;
         --horizontal-child-line-length: 35px;
-        --child-line-width: 1px;
+        --child-line-thickness: 1px;
         --child-line-color: black;
+
+        --modifier-gap: calc(var(--parent-node-size) + 0.75rem);
+        padding-left: var(--modifier-gap);
     }
 
     .child {
@@ -120,7 +125,7 @@
 
     .child-line {
         width: var(--horizontal-child-line-length);
-        height: var(--child-line-width);
+        height: var(--child-line-thickness);
         background-color: var(--child-line-color);
     }
 
@@ -129,12 +134,11 @@
 
         position: absolute;
         top: var(--parent-node-top);
-        transform: translate(-50%, -50%);
+        transform: translate(calc(-1 * var(--modifier-gap)), -50%);
         background-color: var(--medium-light-grey);
         border-radius: 50%;
         border: 1px solid var(--medium-grey);
 
-        --parent-node-size: 2.5em;
         width: var(--parent-node-size);
         height: var(--parent-node-size);
         line-height: var(--parent-node-size);
@@ -146,10 +150,19 @@
     }
 
     .vertical-line {
-        width: var(--child-line-width);
+        width: var(--child-line-thickness);
         background-color: var(--child-line-color);
         position: absolute;
         top: var(--vertical-line-top);
         height: var(--vertical-line-height);
+    }
+
+    .horizontal-line {
+        height: var(--child-line-thickness);
+        width: var(--modifier-gap);
+        position: absolute;
+        top: var(--horizontal-line-top);
+        transform: translateX(-100%);
+        background-color: var(--child-line-color);
     }
 </style>
