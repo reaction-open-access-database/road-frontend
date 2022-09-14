@@ -41,7 +41,7 @@
         justify-content: space-around;
         background-color: var(--dark-background-color);
 
-        position: absolute;
+        position: fixed;
         bottom: 0;
 
         --side-padding: 10vw;
