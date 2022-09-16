@@ -40,15 +40,7 @@
 
     let children = [];
     let child_elements = [];
-    let vertical_line_top = "0px";
-    let vertical_line_height = "0px";
-    let parent_node_top = "0px";
     let parent;
-
-    function get_node_position(node) {
-        let rect = node.children[0].getBoundingClientRect();
-        return (rect.top + rect.bottom) / 2;
-    }
 
     function add_child_leaf_node() {
         child_nodes.push({type: "leaf", data: {}});
@@ -64,63 +56,72 @@
         current_modifier_index++;
         current_modifier_index %= MODIFIER_TYPES.length;
     }
-
-    $: if (children.length >= 1) {
-        let first_node = children[0];
-        let final_node = children[children.length - 1];
-
-        let top = get_node_position(first_node);
-        let bottom = get_node_position(final_node);
-
-        vertical_line_top = top.toString() + "px";
-        vertical_line_height = (bottom - top).toString() + "px";
-        parent_node_top = ((top + bottom) / 2).toString() + "px";
-    } else {
-        try {
-            let rect = parent.getBoundingClientRect();
-            parent_node_top = rect.top.toString() + "px";
-        } catch {
-
-        }
-    }
 </script>
 
 <div class="parent" bind:this={parent}>
-    <div class="parent-node" style="--parent-node-top: {parent_node_top}" on:click={change_modifier_type}>
-        {MODIFIER_TYPES[current_modifier_index].toUpperCase()}
-    </div>
-    <div class="vertical-line" style="--vertical-line-top: {vertical_line_top}; --vertical-line-height: {vertical_line_height}"></div>
-    <div class="horizontal-line" style="--horizontal-line-top: {parent_node_top}"></div>
-    {#each child_nodes as child_node, i}
-        <div class="child" bind:this={children[i]}>
-            <div class="child-line"></div>
-            <div class="child-node">
-                {#if child_node.type === "modifier"}
-                    <SearchTreeModifier child_nodes={child_node.data} {search_options} bind:this={child_elements[i]} />
-                {:else if child_node.type === "leaf"}
-                    <SearchTreeLeaf {search_options} bind:this={child_elements[i]} />
-                {/if}
-            </div>
+    <div class="parent-container">
+        <div class="parent-node" on:click={change_modifier_type}>
+            {MODIFIER_TYPES[current_modifier_index].toUpperCase()}
         </div>
-    {/each}
+        <div class="horizontal-line"></div>
+        <div class="add-child-buttons">
+            <button on:click={add_child_leaf_node} class="add-leaf-button">+</button>
+            <button on:click={add_child_modifier_node} class="add-modifier-button">+</button>
+        </div>
+    </div>
+    <div class="children">
+        {#each child_nodes as child_node, i (i)}
+            <div class="child" bind:this={children[i]}>
+                <div class="vertical-line">
+                    <div class="upper-vertical-line"></div>
+                    <div class="central-vertical-line"></div>
+                    <div class="lower-vertical-line"></div>
+                </div>
+                <div class="child-node-container">
+                    <div class="child-line"></div>
+                    <div class="child-node">
+                        {#if child_node.type === "modifier"}
+                            <SearchTreeModifier child_nodes={child_node.data} {search_options} bind:this={child_elements[i]} />
+                        {:else if child_node.type === "leaf"}
+                            <SearchTreeLeaf {search_options} bind:this={child_elements[i]} />
+                        {/if}
+                    </div>
+                </div>
+            </div>
+        {/each}
+    </div>
 </div>
 
 <style>
     .parent {
         --parent-node-size: 2rem;
-        --horizontal-child-line-length: 0.75rem;
+        --horizontal-child-line-length: 1rem;
         --child-line-thickness: 1px;
         --child-line-color: black;
 
         --modifier-gap: calc(var(--parent-node-size) + var(--horizontal-child-line-length));
-        padding-left: var(--modifier-gap);
-    }
 
-    .child {
-        padding: 10px 0;
         display: flex;
         flex-direction: row;
         align-items: center;
+    }
+
+    .parent-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .child {
+        display: flex;
+    }
+
+    .child-node-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .child:not(:only-child) > .child-node-container {
+        padding: 10px 0;
     }
 
     .child-line {
@@ -129,12 +130,38 @@
         background-color: var(--child-line-color);
     }
 
+    .vertical-line {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .lower-vertical-line {
+        width: var(--child-line-thickness);
+        height: 50%;
+    }
+
+    .central-vertical-line {
+        width: var(--child-line-thickness);
+        height: 1px;
+        background-color: var(--child-line-color);
+    }
+
+    .upper-vertical-line {
+        width: var(--child-line-thickness);
+        height: 50%;
+    }
+
+    .child:not(:last-child) > .vertical-line > .lower-vertical-line {
+        background-color: var(--child-line-color);
+    }
+
+    .child:not(:first-child) > .vertical-line > .upper-vertical-line {
+        background-color: var(--child-line-color);
+    }
+
     .parent-node {
         font-size: 0.75em;
 
-        position: absolute;
-        top: var(--parent-node-top);
-        transform: translate(calc(-1 * var(--modifier-gap)), -50%);
         background-color: var(--medium-light-grey);
         border-radius: 50%;
         border: 1px solid var(--medium-grey);
@@ -149,20 +176,35 @@
         cursor: pointer;
     }
 
-    .vertical-line {
-        width: var(--child-line-thickness);
-        background-color: var(--child-line-color);
-        position: absolute;
-        top: var(--vertical-line-top);
-        height: var(--vertical-line-height);
-    }
-
     .horizontal-line {
         height: var(--child-line-thickness);
-        width: var(--modifier-gap);
-        position: absolute;
-        top: var(--horizontal-line-top);
-        transform: translateX(-100%);
+        width: var(--horizontal-child-line-length);
         background-color: var(--child-line-color);
+    }
+
+    .add-child-buttons {
+        display: none;
+        flex-direction: column;
+        position: relative;
+        width: 0;
+
+        font-size: 0.8em;
+
+        left: -1.1em;
+    }
+
+    .add-child-buttons > button {
+        background-color: var(--dark-background-color);
+        width: 1em;
+        color: var(--light-text-color);
+    }
+
+    .add-modifier-button {
+        margin-top: 0.5em;
+        border-radius: 50%;
+    }
+
+    .parent-container:hover > .add-child-buttons {
+        display: flex;
     }
 </style>

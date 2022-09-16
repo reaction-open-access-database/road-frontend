@@ -4,12 +4,12 @@
 
     export let search_options;
 
-    let child_node = {type: "modifier", data: [{type: "leaf", data: {}}, {type: "modifier", data: []}]};
-    let child_element;
-
     export function create_query() {
         return child_element.create_query();
     }
+
+    let child_node = {type: "modifier", data: [{type: "leaf", data: {}}, {type: "modifier", data: []}]};
+    let child_element;
 </script>
 
 <div id="search-tree">
