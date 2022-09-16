@@ -47,6 +47,8 @@
         --side-padding: 10vw;
         width: calc(100vw - 2 * var(--side-padding));
 
+        z-index: 10;
+
         padding-top: 1em;
         padding-bottom: 1.5em;
         padding-left: var(--side-padding);
