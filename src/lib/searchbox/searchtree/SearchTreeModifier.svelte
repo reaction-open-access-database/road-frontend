@@ -63,7 +63,7 @@
         <div class="parent-node" on:click={change_modifier_type}>
             {MODIFIER_TYPES[current_modifier_index].toUpperCase()}
         </div>
-        <div class="horizontal-line"></div>
+        <div class="horizontal-line" style="background: {child_nodes.length > 0 ? 'var(--child-line-color)' : 'none'}"></div>
         <div class="add-child-buttons">
             <button on:click={add_child_leaf_node} class="add-leaf-button">+</button>
             <button on:click={add_child_modifier_node} class="add-modifier-button">+</button>
@@ -179,7 +179,6 @@
     .horizontal-line {
         height: var(--child-line-thickness);
         width: var(--horizontal-child-line-length);
-        background-color: var(--child-line-color);
     }
 
     .add-child-buttons {
