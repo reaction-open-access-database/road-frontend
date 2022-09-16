@@ -187,12 +187,13 @@
         position: relative;
         width: 0;
 
-        font-size: 0.8em;
+        font-size: 0.75em;
 
         left: -1.1em;
     }
 
     .add-child-buttons > button {
+        font-size: inherit;
         background-color: var(--dark-background-color);
         width: 1em;
         color: var(--light-text-color);
