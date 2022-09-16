@@ -21,5 +21,7 @@
 </div>
 
 <style>
-
+    #search-tree {
+        padding: 10px;
+    }
 </style>
