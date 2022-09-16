@@ -31,7 +31,5 @@
     #search-tree-leaf {
         display: flex;
         flex-direction: row;
-        --height: 2em;
-        height: var(--height);
     }
 </style>

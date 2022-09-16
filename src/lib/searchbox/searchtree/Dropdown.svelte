@@ -1,7 +1,7 @@
 <script lang="ts">
     export let selected;
     export let options = [];
-    export let height = "2em";
+    export let height = "calc(2em + 2px)"; // 2px for the border
     export let width = "10em";
 
     $: selected = options[0];
