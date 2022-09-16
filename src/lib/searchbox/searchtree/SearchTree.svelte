@@ -8,7 +8,7 @@
         return child_element.create_query();
     }
 
-    let child_node = {type: "modifier", data: [{type: "leaf", data: {}}, {type: "modifier", data: []}]};
+    let child_node = {type: "modifier", data: []};
     let child_element;
 </script>
 
