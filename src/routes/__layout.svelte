@@ -5,8 +5,17 @@
     import {page_name} from '../stores.ts';
 </script>
 
-<Header {page_name} />
+<div id="page-container">
+    <Header {page_name} />
 
-<slot />
+    <slot />
 
-<Footer />
+    <Footer />
+</div>
+
+<style>
+    #page-container {
+        min-height: 100vh;
+        position: relative;
+    }
+</style>
