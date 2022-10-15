@@ -2,7 +2,7 @@
     export let selected;
     export let options = [];
     export let height = "calc(2em + 2px)"; // 2px for the border
-    export let width = "10em";
+    export let width = "12em";
 
     $: selected = options[0];
 

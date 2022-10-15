@@ -13,10 +13,10 @@
     export let child_nodes;
     export let search_options;
 
-    export function create_query() {
-        let subqueries = child_elements
-            .map((child) => child.create_query())
-            .filter((query) => query != null);
+    export async function create_query() {
+        let promised_subqueries = child_elements.map(async (child) => await child.create_query());
+        let unfiltered_subqueries = await Promise.all(promised_subqueries);
+        let subqueries = unfiltered_subqueries.filter((query) => query != null);
         let modifier = MODIFIER_TYPES[current_modifier_index];
 
         // If there are no subqueries, there's no point having the modifier

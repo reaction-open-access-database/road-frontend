@@ -4,16 +4,17 @@
 
     export let search_options = [];
 
-    export function create_query() {
+    export async function create_query() {
         return {
             type: 'quantity',
-            query: selected.get_query(),
+            query: await selected.get_query(selected_operator, await input.get_value()),
         };
     }
 
     let selected_name = null;
     let selected_operator = null;
     let dropdown_options = search_options.map(option => option.name);
+    let input = null;
 
     $: selected = search_options.find(option => option.name == selected_name);
 </script>
@@ -23,7 +24,7 @@
 
     {#if selected != null}
         <Dropdown bind:selected={selected_operator} options={selected.operators} width="4em" />
-        <Input type={selected.input} />
+        <Input type={selected.input} operator={selected_operator} bind:this={input} />
     {/if}
 </div>
 
@@ -31,5 +32,7 @@
     #search-tree-leaf {
         display: flex;
         flex-direction: row;
+
+        align-items: center;
     }
 </style>
