@@ -8,16 +8,15 @@
         "not",
     ]
 
-    let current_modifier_index = 0;
-
     export let child_nodes;
     export let search_options;
+    export let root_add_function = null;
+    export let modifier = "and";
 
     export async function create_query() {
         let promised_subqueries = child_elements.map(async (child) => await child.create_query());
         let unfiltered_subqueries = await Promise.all(promised_subqueries);
         let subqueries = unfiltered_subqueries.filter((query) => query != null);
-        let modifier = MODIFIER_TYPES[current_modifier_index];
 
         // If there are no subqueries, there's no point having the modifier
         if (subqueries.length == 0) {
@@ -27,6 +26,16 @@
         // If there is only one AND or OR subquery, we don't need to use the modifier
         if (subqueries.length == 1 && (modifier == "and" || modifier == "or")) {
             return subqueries[0];
+        }
+
+        if (modifier == "not") {
+            return {
+                type: 'modifier',
+                query: {
+                    type: 'not',
+                    query: subqueries[0],
+                }
+            }
         }
 
         return {
@@ -48,25 +57,34 @@
     }
 
     function add_child_modifier_node() {
-        child_nodes.push({type: "modifier", data: []});
+        child_nodes.push({type: "modifier", data: [], modifier: "and"});
         child_nodes = child_nodes;
     }
 
     function change_modifier_type() {
-        current_modifier_index++;
-        current_modifier_index %= MODIFIER_TYPES.length;
+        const current_modifier_index = MODIFIER_TYPES.indexOf(modifier);
+        const next_modifier_index = (current_modifier_index + 1) % MODIFIER_TYPES.length;
+        modifier = MODIFIER_TYPES[next_modifier_index];
+    }
+
+    function remove_child(child_index) {
+        child_nodes.splice(child_index, 1);
+        child_nodes = child_nodes;
     }
 </script>
 
 <div class="parent" bind:this={parent}>
     <div class="parent-container">
+        {#if root_add_function != null}
+            <button on:click={root_add_function} class="add-parent-button add-button">+</button>
+        {/if}
         <div class="parent-node" on:click={change_modifier_type}>
-            {MODIFIER_TYPES[current_modifier_index].toUpperCase()}
+            {modifier.toUpperCase()}
         </div>
         <div class="horizontal-line" style="background: {child_nodes.length > 0 ? 'var(--child-line-color)' : 'none'}"></div>
         <div class="add-child-buttons">
-            <button on:click={add_child_leaf_node} class="add-leaf-button">+</button>
-            <button on:click={add_child_modifier_node} class="add-modifier-button">+</button>
+            <button on:click={add_child_leaf_node} class="add-leaf-button add-button">+</button>
+            <button on:click={add_child_modifier_node} class="add-modifier-button add-button">+</button>
         </div>
     </div>
     <div class="children">
@@ -78,10 +96,13 @@
                     <div class="lower-vertical-line"></div>
                 </div>
                 <div class="child-node-container">
-                    <div class="child-line"></div>
+                    <div class="before-child">
+                        <div class="child-line"></div>
+                        <button class="remove-child-button add-button" on:click={() => remove_child(i)}>-</button>
+                    </div>
                     <div class="child-node">
                         {#if child_node.type === "modifier"}
-                            <SearchTreeModifier child_nodes={child_node.data} {search_options} bind:this={child_elements[i]} />
+                            <SearchTreeModifier child_nodes={child_node.data} {search_options} bind:modifier={child_node.modifier} bind:this={child_elements[i]} />
                         {:else if child_node.type === "leaf"}
                             <SearchTreeLeaf {search_options} bind:this={child_elements[i]} />
                         {/if}
@@ -109,6 +130,8 @@
     .parent-container {
         display: flex;
         align-items: center;
+
+        position: relative;
     }
 
     .child {
@@ -192,11 +215,18 @@
         left: -1.1em;
     }
 
-    .add-child-buttons > button {
+    .add-button {
         font-size: inherit;
         background-color: var(--dark-background-color);
         width: 1em;
         color: var(--light-text-color);
+        padding: 0;
+    }
+
+    .add-parent-button {
+        display: none;
+
+        font-size: 0.75em;
     }
 
     .add-modifier-button {
@@ -206,5 +236,39 @@
 
     .parent-container:hover > .add-child-buttons {
         display: flex;
+    }
+
+    .parent-container:hover > .add-parent-button {
+        display: block;
+        position: absolute;
+        left: 0;
+        transform: translateX(-120%);
+    }
+
+    .parent-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1em;
+        height: 100%;
+        transform: translateX(-100%);
+    }
+
+    .remove-child-button {
+        font-size: 0.75em;
+        position: absolute;
+
+        transform: translate(25%, 25%);
+
+        z-index: 1;
+
+        padding: 0;
+
+        display: none;
+    }
+
+    .child-node-container:hover > .before-child > .remove-child-button {
+        display: block;
     }
 </style>
