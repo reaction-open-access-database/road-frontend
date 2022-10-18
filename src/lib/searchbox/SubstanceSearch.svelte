@@ -26,13 +26,13 @@
     export async function search() {
         const query = await search_tree.create_query();
         const string_query = JSON.stringify(query);
-        console.log(query);
-        console.log(string_query);
 
         const molecule_query_url = new URL('/molecule-query/?', API_URL) + new URLSearchParams({query: string_query});
         const response = await fetch(molecule_query_url);
         const json = await response.json();
         console.log(json);
+
+        return json;
     }
 
     function parse_string_molecular_formula(molecular_formula) {

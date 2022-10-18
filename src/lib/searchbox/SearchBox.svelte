@@ -3,6 +3,8 @@
     import ReactionSearch from "./ReactionSearch.svelte";
     import RetrosynthesisSearch from "./RetrosynthesisSearch.svelte";
 
+    export let search_results;
+
     enum SearchType {
         Substance = SubstanceSearch,
         Reaction = ReactionSearch,
@@ -22,7 +24,7 @@
 
     <svelte:component this={search_type} bind:this={search_component} />
 
-    <button id="search-button" on:click={() => search_component.search()}>Search</button>
+    <button id="search-button" on:click={() => {search_results = search_component.search()}}>Search</button>
 </div>
 
 <style>
