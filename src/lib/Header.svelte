@@ -1,5 +1,17 @@
 <script lang="ts">
+    import { user } from '../stores';
+
     export let page_name;
+
+    $: is_logged_in = $user !== null;
+
+    $: if (is_logged_in) {
+        console.log($user);
+    }
+
+    function logout() {
+        user.set(null);
+    }
 </script>
 
 <header>
@@ -9,10 +21,17 @@
 
     <b id="page-title">{$page_name}</b>
 
-    <div id="login-section">
-        <a href="/signup" id="signup-button">Sign Up</a>
-        <a href="/login" id="login-button">Login</a>
-    </div>
+    {#if is_logged_in}
+        <p id="user-name">
+            {$user.username} ▼
+            <button id="logout-button" on:click={logout}>Logout</button>
+        </p>
+    {:else}
+        <div id="login-section">
+            <a href="/accounts/register" id="register-button">Register</a>
+            <a href="/accounts/login" id="login-button">Login</a>
+        </div>
+    {/if}
 </header>
 
 <style>
@@ -33,7 +52,7 @@
         align-items: center;
     }
 
-    #signup-button, #login-button {
+    #register-button, #login-button {
         display: block;
         border-radius: 0.25em;
         border: var(--light-accent-color) 2px solid;
@@ -47,7 +66,7 @@
         line-height: var(--height);
     }
 
-    #signup-button {
+    #register-button {
         background-color: white;
         color: var(--light-accent-color);
 
@@ -61,5 +80,25 @@
 
     a {
         text-decoration: none;
+    }
+
+    #user-name {
+        cursor: pointer;
+        position: relative;
+    }
+
+    #logout-button {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+
+        font-size: inherit;
+        font-family: inherit;
+    }
+
+    #user-name:hover #logout-button {
+        display: block;
+        background: none;
     }
 </style>
