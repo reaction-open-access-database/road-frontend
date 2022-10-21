@@ -5,10 +5,6 @@
 
     $: is_logged_in = $user !== null;
 
-    $: if (is_logged_in) {
-        console.log($user);
-    }
-
     function logout() {
         user.set(null);
     }

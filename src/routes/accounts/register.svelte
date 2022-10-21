@@ -24,8 +24,6 @@
             password2: data['password'],
         }
 
-        console.log(post_data);
-
         const register_url = new URL('/register/', API_URL);
         const result = await fetch(register_url, {
             method: 'POST',
@@ -39,8 +37,7 @@
             verification_email_sent = true;
         } else {
             const error = await result.json();
-            console.log(error);
-            console.log(JSON.stringify(error));
+            alert(JSON.stringify(error));
         }
     }
 </script>

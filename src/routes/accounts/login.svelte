@@ -18,7 +18,7 @@
         let post_data = {password: data['password'], username: data['username']};
 
         const login_url = new URL('/login/', API_URL);
-        const res = await fetch(login_url, {
+        const result = await fetch(login_url, {
             method: 'POST',
             body: JSON.stringify(post_data),
             headers: {
@@ -26,16 +26,14 @@
             },
         });
 
-        if (res.status == 200) {
-            let data = await res.json();
+        if (result.ok) {
+            let data = await result.json();
             data['username'] = post_data['username'];
             user.set(data);
             window.location.href = '/';
-
-            console.log(user);
         } else {
-            const data = await res.json();
-            alert(data['error']);
+            const error = await result.json();
+            alert(JSON.stringify(error));
         }
     }
 </script>
