@@ -4,7 +4,20 @@
 
 <div class="search-result">
     {@html result.svg}
-    <p class="result-name">{result.name}</p>
+    <table class="other-info">
+        <tr>
+            <td>Name</td>
+            <td>{result.name}</td>
+        </tr>
+        <tr>
+            <td>Molecular Weight (g/mol)</td>
+            <td>{result.mw.toFixed(2)}</td>
+        </tr>
+        <tr>
+            <td>Molecular Formula</td>
+            <td>{result.formula}</td>
+        </tr>
+    </table>
 </div>
 
 <style>
@@ -21,7 +34,8 @@
         margin: 10px;
     }
 
-    .result-name {
+    .other-info {
         margin-left: 2em;
+        border-spacing: 1em 0.25em;
     }
 </style>

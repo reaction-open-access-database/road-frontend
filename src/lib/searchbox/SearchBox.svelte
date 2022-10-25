@@ -18,8 +18,6 @@
 <div id="search-box">
     <div id="options">
         <button class="option" on:click={() => search_type = SearchType.Substance}>Substance</button>
-        <button class="option" on:click={() => search_type = SearchType.Reaction}>Reaction</button>
-        <button class="option" on:click={() => search_type = SearchType.Retrosynthesis}>Retrosynthesis</button>
     </div>
 
     <svelte:component this={search_type} bind:this={search_component} />

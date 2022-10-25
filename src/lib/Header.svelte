@@ -35,6 +35,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+
+        padding: 1vh 1vw;
     }
 
     #page-title {

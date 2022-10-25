@@ -1,9 +1,7 @@
 <script lang="ts">
     const options = [
-        { name: "Add Reaction", href: "", image_path: "" },
-        { name: "Getting Started", href: "", image_path: "" },
-        { name: "Documentation", href: "", image_path: "" },
-        { name: "Batch Edit", href: "", image_path: "" },
+        { name: "Add Molecule", href: "/create-molecule", image_path: "/plus.svg" },
+        { name: "View Molecules", href: "/molecules", image_path: "/document.svg" },
     ]
 </script>
 
@@ -11,8 +9,8 @@
     {#each options as option}
         <a href={option.href}>
             <div class="icon">
-<!--                <img src={option.image_path} />-->
                 <div class="circle"></div>
+                <img src={option.image_path} />
             </div>
 
             <p>{option.name}</p>
@@ -23,7 +21,9 @@
 <style>
     #contribute {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
+
+        margin-top: 10vh;
     }
 
     a {
@@ -31,6 +31,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        color: var(--dark-text-color);
+        margin: 0 3vw;
     }
 
     .circle {
@@ -41,7 +43,23 @@
     }
 
     .icon {
+        position: relative;
         height: 100px;
         width: 100px;
+    }
+
+    .icon > * {
+        position: absolute;
+    }
+
+    .icon > img {
+        object-fit: contain;
+
+        --size: 70%;
+
+        width: var(--size);
+        height: var(--size);
+        top: calc(50% - var(--size) / 2);
+        left: calc(50% - var(--size) / 2);
     }
 </style>

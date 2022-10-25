@@ -6,14 +6,11 @@
 
     page_name.set("Home");
 
-    let num_reactions = 1234;
-    let num_sources = 321;
-
     let search_results = null;
 </script>
 
 <main>
-    <p id="summary">Search through {num_reactions} reactions from {num_sources} sources.</p>
+    <div id="spacer"></div>
 
     <SearchBox bind:search_results={search_results} />
 
@@ -27,5 +24,9 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+
+    #spacer {
+        height: 10vh;
     }
 </style>

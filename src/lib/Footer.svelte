@@ -6,32 +6,15 @@
 
 <footer bind:clientHeight={footer_height}>
     <div class="column">
-        <a href="/about">About</a>
-        <a href="">What is ROAD?</a> <!-- TODO: href -->
-        <a href="/about/license">License</a>
-        <a href="/about/privacy">Privacy Policy</a>
-        <a href="">Disclaimer</a> <!-- TODO: href -->
+        <p>Tools</p>
+        <a href="/">Substance Search</a>
+        <a href="/create-molecule">Create Molecule</a>
+        <a href="/molecules">View Molecules</a>
     </div>
     <div class="column">
-        <a href="">Tools</a> <!-- TODO: href -->
-        <a href="">Substance Search</a> <!-- TODO: href -->
-        <a href="">Reaction Search</a> <!-- TODO: href -->
-        <a href="">Retrosynthesis</a> <!-- TODO: href -->
-        <a href="">Add reaction</a> <!-- TODO: href -->
-        <a href="">Batch Edit</a> <!-- TODO: href -->
-    </div>
-    <div class="column">
-        <a href="/documentation">Documentation</a>
-        <a href="">Substance Search</a> <!-- TODO: href -->
-        <a href="">Reaction Search</a> <!-- TODO: href -->
-        <a href="">Retrosynthesis</a> <!-- TODO: href -->
-        <a href="">Adding Substances</a> <!-- TODO: href -->
-        <a href="">Adding Reactions</a> <!-- TODO: href -->
-    </div>
-    <div class="column">
-        <a href="">Download</a> <!-- TODO: href -->
-        <a href="">Download Database</a> <!-- TODO: href -->
-        <a href="">Download Schema</a> <!-- TODO: href -->
+        <p>Account</p>
+        <a href="/accounts/register">Register</a>
+        <a href="/accounts/login">Login</a>
     </div>
 </footer>
 
@@ -52,13 +35,13 @@
         padding: 1em var(--side-padding) 1.5em;
     }
 
-    a {
+    a, p {
         color: var(--light-text-color);
         text-decoration: none;
         display: block;
     }
 
-    a:first-child {
+    a:first-child, p:first-child {
         font-weight: bold;
         font-size: 1.2em;
         margin-bottom: 0.5em;
