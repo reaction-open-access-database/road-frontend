@@ -77,6 +77,8 @@
 
     .option {
         border-right-width: var(--option-border-width);
+        font-size: 1.2em;
+        padding: 0.2em 0;
     }
 
     .option:first-child {

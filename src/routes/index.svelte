@@ -10,13 +10,19 @@
 </script>
 
 <main>
-    <div id="spacer"></div>
+    <div id="spacer-1"></div>
 
     <SearchBox bind:search_results={search_results} />
+
+    {#if search_results}
+        <div id="spacer-2"></div>
+    {/if}
 
     <SearchResults {search_results} />
 
     <Contribute />
+
+    <div id="spacer-3"></div>
 </main>
 
 <style>
@@ -26,7 +32,15 @@
         align-items: center;
     }
 
-    #spacer {
+    #spacer-1 {
         height: 10vh;
+    }
+
+    #spacer-2 {
+        height: 5vh;
+    }
+
+    #spacer-3 {
+        height: 5vh;
     }
 </style>
