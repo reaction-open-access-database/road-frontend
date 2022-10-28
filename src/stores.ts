@@ -2,7 +2,7 @@ import { writable } from "svelte/store";
 import { browser } from "$app/env";
 
 export const page_name = writable("");
-export const API_URL = import.meta.env.VITE_API_URL;
+export const API_URL = "http://road.ddns.net:8000";
 
 const initial_user = browser ? localStorage.getItem("user") : null;
 
