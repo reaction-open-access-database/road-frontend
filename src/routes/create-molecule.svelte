@@ -1,17 +1,20 @@
 <script lang="ts">
     import {API_URL, page_name, user} from '../stores';
     import Input from "../lib/searchbox/searchtree/Input.svelte";
+    import { format_error } from "./accounts/error_formatter";
 
     page_name.set("Create Molecule");
 
     let input;
     let name;
 
+    let error = '';
+
     async function create_molecule() {
         const molecule = await input.get_value();
 
         if ($user == null) {
-            alert("You must be logged in to create a molecule");
+            error = "You must be logged in to create a molecule.";
             return;
         }
 
@@ -36,7 +39,7 @@
         if (result.ok) {
             window.location.href = `/molecules?molecule=${json.id}`;
         } else {
-            alert("Error creating molecule: " + JSON.stringify(json));
+            error = format_error(json);
         }
     }
 </script>
@@ -46,6 +49,7 @@
     <div id="other-information">
         <input type="text" placeholder="Name" bind:value={name} />
         <button on:click={create_molecule} id="create-button">Create</button>
+        <p id="error">{@html error}</p>
     </div>
 </main>
 
