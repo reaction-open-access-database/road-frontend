@@ -1,11 +1,13 @@
 <script lang="ts">
-    import { useForm, validators, required, Hint, HintGroup, email } from "svelte-use-form";
-    import { username } from "./validators";
+    import { useForm } from "svelte-use-form";
     import { page_name, API_URL } from "../../stores.ts";
+    import { format_error } from "./error_formatter";
 
     page_name.set("Register");
 
     const form = useForm();
+
+    let error_string = '';
 
     let verification_email_sent = false;
 
@@ -37,7 +39,7 @@
             verification_email_sent = true;
         } else {
             const error = await result.json();
-            alert(JSON.stringify(error));
+            error_string = format_error(error);
         }
     }
 </script>
@@ -49,29 +51,22 @@
         <form use:form on:submit|preventDefault={register}>
             <div id="username-group">
                 <label for="username">Username</label>
-                <input type="text" name="username" id="username" use:validators={[required, username]} />
-                <HintGroup for="username">
-                    <Hint on="required">This is a mandatory field</Hint>
-                    <Hint on="username">Invalid username</Hint>
-                </HintGroup>
+                <input type="text" name="username" id="username" />
             </div>
 
             <div id="email-group">
                 <label for="email">Email</label>
-                <input type="email" name="email" id="email" use:validators={[required, email]} />
-                <HintGroup for="email">
-                    <Hint on="required">This is a mandatory field</Hint>
-                    <Hint on="email">Invalid email</Hint>
-                </HintGroup>
+                <input type="email" name="email" id="email" />
             </div>
 
             <div id="password-group">
                 <label for="password">Password</label>
-                <input type="password" name="password" id="password" use:validators={[required]} />
-                <Hint for="password" on="required">This is a mandatory field</Hint>
+                <input type="password" name="password" id="password" />
             </div>
 
-            <button disabled={!$form.valid}>
+            <p id="issue">{@html error_string}</p>
+
+            <button>
                 Register
             </button>
         </form>
@@ -108,5 +103,11 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+
+    label {
+        display: inline-block;
+        width: 6em;
+        text-align: right;
     }
 </style>

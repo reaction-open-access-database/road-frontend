@@ -1,11 +1,13 @@
 <script lang="ts">
-    import { useForm, validators, required, Hint, HintGroup } from "svelte-use-form";
-    import { username } from "./validators";
+    import { useForm } from "svelte-use-form";
     import { page_name, API_URL, user } from "../../stores.ts";
+    import { format_error } from "./error_formatter";
 
     page_name.set("Login");
 
     const form = useForm();
+
+    let error_string = '';
 
     async function login(e) {
         const form_data = new FormData(e.target);
@@ -33,7 +35,7 @@
             window.location.href = '/';
         } else {
             const error = await result.json();
-            alert(JSON.stringify(error));
+            error_string = format_error(error);
         }
     }
 </script>
@@ -42,20 +44,17 @@
     <form use:form on:submit|preventDefault={login}>
         <div id="username-group">
             <label for="username">Username</label>
-            <input type="text" name="username" id="username" use:validators={[required, username]} />
-            <HintGroup for="username">
-                <Hint on="required">This is a mandatory field</Hint>
-                <Hint on="username">Invalid username</Hint>
-            </HintGroup>
+            <input type="text" name="username" id="username" />
         </div>
 
         <div id="password-group">
             <label for="password">Password</label>
-            <input type="password" name="password" id="password" use:validators={[required]} />
-            <Hint for="password" on="required">This is a mandatory field</Hint>
+            <input type="password" name="password" id="password" />
         </div>
 
-        <button disabled={!$form.valid}>
+        <p id="issue">{@html error_string}</p>
+
+        <button>
             Login
         </button>
     </form>
@@ -85,5 +84,11 @@
         height: var(--height);
         line-height: var(--height);
         border-radius: 0.25em;
+    }
+
+    label {
+        display: inline-block;
+        width: 6em;
+        text-align: right;
     }
 </style>
