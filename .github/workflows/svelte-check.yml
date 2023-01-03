@@ -17,4 +17,4 @@ jobs:
       run: npm install
 
     - name: Checking code with svelte-check
-      run: svelte-check --tsconfig tsconfig.json
+      run: npx svelte-check --tsconfig tsconfig.json
