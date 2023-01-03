@@ -12,7 +12,7 @@
     }
 
     let search_type: SearchType = SearchType.Substance;
-    let search_component;
+    let search_component: SubstanceSearch | ReactionSearch | RetrosynthesisSearch;
 </script>
 
 <div id="search-box">

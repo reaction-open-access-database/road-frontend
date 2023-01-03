@@ -5,8 +5,8 @@
 
     page_name.set("Create Molecule");
 
-    let input;
-    let name;
+    let input: Input;
+    let name: string;
 
     let error = '';
 
