@@ -1,23 +1,21 @@
 <script lang="ts">
     import SearchTree from "./searchtree/SearchTree.svelte";
     import {API_URL} from "../../stores";
-    import { InputType } from "../../types";
-
-    const operator_map = {'=': 'equal', '>': 'greaterthan', '>=': 'greaterthanorequal', '<': 'lessthan', '<=': 'lessthanorequal'};
+    import {InputType, Operation, operator_names } from "../../types";
 
     const search_options = [
-        {name: 'Structure', operators: ['='], input: InputType.Structure, get_query: (selected_operator, input) => {
-            return {value: {type: 'smiles', value: input}, type: 'structure', op: operator_map[selected_operator]};
+        {name: 'Structure', operators: [Operation.Equal], input: InputType.Structure, get_query: (selected_operator, input) => {
+            return {value: {type: 'smiles', value: input}, type: 'structure', op: operator_names[selected_operator]};
         }},
-        {name: 'Molecular Weight', operators: ['=', '>', '<', '>=', '<='], input: InputType.Float, get_query: (selected_operator, input) => {
-            const op = operator_map[selected_operator];
+        {name: 'Molecular Weight', operators: [Operation.Equal, Operation.GreaterThan, Operation.LessThan, Operation.GreaterThanOrEqual, Operation.LessThanOrEqual], input: InputType.Float, get_query: (selected_operator: Operation, input) => {
+            const op = operator_names[selected_operator];
             let molecular_weight = {value: input.value, type: op};
-            if (op == 'equal') {
+            if (selected_operator === Operation.Equal) {
                 molecular_weight.tolerance = input.tolerance;
             }
             return {molecular_weight: molecular_weight, type: 'molecularweight'};
         }},
-        {name: 'Molecular Formula', operators: ['='], input: InputType.String, get_query: (selected_operator, input) => {
+        {name: 'Molecular Formula', operators: [Operation.Equal], input: InputType.String, get_query: (selected_operator, input) => {
             return {type: 'molecularformula', atoms: parse_string_molecular_formula(input)}
         }},
     ]

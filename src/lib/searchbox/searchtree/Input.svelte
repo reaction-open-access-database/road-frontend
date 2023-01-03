@@ -1,8 +1,8 @@
 <script lang="ts">
-    import {InputType} from "../../../types";
+    import { InputType, Operation } from "../../../types";
 
     export let type: InputType;
-    export let operator; // TODO: Change this to an enum
+    export let operator: Operation;
     export async function get_value() {
         if (type === InputType.Structure) {
             const ketcher = ketcher_frame.contentWindow.ketcher;
@@ -24,7 +24,7 @@
     <iframe id="ketcher-frame" src="ketcher/index.html" width="800" height="600" bind:this={ketcher_frame}></iframe>
 {:else if type === InputType.Float}
     <input type="number" step="0.1" bind:value={float_value}>
-    {#if operator === '='}
+    {#if operator === Operation.Equal}
         ±<input type="number" step="0.1" bind:value={float_tolerance}>
     {/if}
 {:else if type === InputType.String}
