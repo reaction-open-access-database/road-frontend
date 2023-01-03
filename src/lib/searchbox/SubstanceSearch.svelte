@@ -1,14 +1,15 @@
 <script lang="ts">
     import SearchTree from "./searchtree/SearchTree.svelte";
     import {API_URL} from "../../stores";
+    import { InputType } from "../../types";
 
     const operator_map = {'=': 'equal', '>': 'greaterthan', '>=': 'greaterthanorequal', '<': 'lessthan', '<=': 'lessthanorequal'};
 
     const search_options = [
-        {name: 'Structure', operators: ['='], input: 'structure', get_query: (selected_operator, input) => {
+        {name: 'Structure', operators: ['='], input: InputType.Structure, get_query: (selected_operator, input) => {
             return {value: {type: 'smiles', value: input}, type: 'structure', op: operator_map[selected_operator]};
         }},
-        {name: 'Molecular Weight', operators: ['=', '>', '<', '>=', '<='], input: 'float', get_query: (selected_operator, input) => {
+        {name: 'Molecular Weight', operators: ['=', '>', '<', '>=', '<='], input: InputType.Float, get_query: (selected_operator, input) => {
             const op = operator_map[selected_operator];
             let molecular_weight = {value: input.value, type: op};
             if (op == 'equal') {
@@ -16,7 +17,7 @@
             }
             return {molecular_weight: molecular_weight, type: 'molecularweight'};
         }},
-        {name: 'Molecular Formula', operators: ['='], input: 'string', get_query: (selected_operator, input) => {
+        {name: 'Molecular Formula', operators: ['='], input: InputType.String, get_query: (selected_operator, input) => {
             return {type: 'molecularformula', atoms: parse_string_molecular_formula(input)}
         }},
     ]
