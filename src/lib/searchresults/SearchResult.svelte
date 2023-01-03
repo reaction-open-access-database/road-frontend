@@ -1,9 +1,22 @@
+<script context="module">
+    let drawings_loaded = false;
+</script>
+
 <script lang="ts">
+    import { afterUpdate } from "svelte";
+
     export let result;
+
+    afterUpdate(() => {
+        if (!drawings_loaded) {
+            drawings_loaded = true;
+            SmiDrawer.apply();
+        }
+    });
 </script>
 
 <div class="search-result">
-    {@html result.svg}
+    <svg data-smiles="{result.smiles}" />
     <table class="other-info">
         <tr>
             <td>Name</td>
