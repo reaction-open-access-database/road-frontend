@@ -24,7 +24,7 @@
     {#if child_node.type === "modifier"}
         <SearchTreeModifier child_nodes={child_node.data} {search_options} bind:modifier={child_node.modifier} bind:this={child_element} root_add_function={create_root_node} />
     {:else if child_node.type === "leaf"}
-        <SearchTreeLeaf {search_options} bind:this={child_element} root_add_function={create_root_node} />
+        <SearchTreeLeaf {search_options} bind:this={child_element} />
     {/if}
 </div>
 
