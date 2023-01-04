@@ -14,16 +14,11 @@
     async function register(e) {
         const form_data = new FormData(e.target);
 
-        let data = {};
-        for (let [key, value] of form_data.entries()) {
-            data[key] = value;
-        }
-
         let post_data = {
-            username: data['username'],
-            email: data['email'],
-            password1: data['password'],
-            password2: data['password'],
+            username: form_data.get('username'),
+            email: form_data.get('email'),
+            password1: form_data.get('password'),
+            password2: form_data.get('password'),
         }
 
         const register_url = new URL('/register/', API_URL);

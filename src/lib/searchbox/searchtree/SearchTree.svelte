@@ -1,7 +1,8 @@
 <script lang="ts">
     import SearchTreeModifier from "./SearchTreeModifier.svelte";
     import SearchTreeLeaf from "./SearchTreeLeaf.svelte";
-    import { Modifier, SearchOption } from "../../../types";
+    import { Modifier } from "../../../types";
+    import type { SearchOption } from "../../../types";
 
     export let search_options: SearchOption[];
 
