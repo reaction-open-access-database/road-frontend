@@ -11,8 +11,8 @@
 
     let verification_email_sent = false;
 
-    async function register(e) {
-        const form_data = new FormData(e.target);
+    async function register(e: SubmitEvent) {
+        const form_data = new FormData(e.target as HTMLFormElement);
 
         let post_data = {
             username: form_data.get('username'),

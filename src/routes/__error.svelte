@@ -1,8 +1,8 @@
-<script context="module">
-  export function load({ error, status }) {
+<script context="module" lang="ts">
+  export function load(data: { error: { message: string }, status: number }) {
       return {
           props: {
-              title: `${status}: ${error.message}`
+              title: `${data.status}: ${data.error.message}`
           }
       };
   }

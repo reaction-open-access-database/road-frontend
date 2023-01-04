@@ -9,8 +9,8 @@
 
     let error_string = '';
 
-    async function login(e) {
-        const form_data = new FormData(e.target);
+    async function login(e: SubmitEvent) {
+        const form_data = new FormData(e.target as HTMLFormElement);
 
         let post_data = {
             password: form_data.get('password'),
