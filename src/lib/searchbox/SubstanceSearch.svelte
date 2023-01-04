@@ -57,7 +57,7 @@
     function parse_string_molecular_formula(molecular_formula: string) {
         const regex = /([A-Z][a-z]?)(\d*)/g;
         let match;
-        let parsed_molecular_formula = {};
+        let parsed_molecular_formula: { [element: string] : number } = {};
         while (match = regex.exec(molecular_formula)) {
             const element = match[1];
             const count = match[2] ? parseInt(match[2]) : 1;
