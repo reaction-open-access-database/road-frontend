@@ -42,3 +42,25 @@ export type SearchOption = {
     input: InputType,
     get_query: (selected_operator: Operation, input: any) => any,
 }
+
+export enum Modifier {
+    And,
+    Or,
+    Not,
+}
+
+type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
+
+type StrictChildNode = {
+    type: "leaf" | "modifier",
+    data: any,
+    modifier: Modifier,
+}
+
+export type ChildNode = Optional<StrictChildNode, 'modifier'>
+
+export const modifier_names: { [key in Modifier] : string } = {
+    [Modifier.And]: 'and',
+    [Modifier.Or]: 'or',
+    [Modifier.Not]: 'not',
+}

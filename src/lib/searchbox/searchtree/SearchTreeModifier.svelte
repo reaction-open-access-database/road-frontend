@@ -1,20 +1,21 @@
 <script lang="ts">
     import SearchTreeLeaf from "./SearchTreeLeaf.svelte";
     import SearchTreeModifier from "./SearchTreeModifier.svelte";
-    import type {SearchOption} from "../../../types";
+    import { Modifier, modifier_names } from "../../../types";
+    import type { SearchOption, ChildNode } from "../../../types";
 
     const MODIFIER_TYPES = [
-        "and",
-        "or",
-        "not",
+        Modifier.And,
+        Modifier.Or,
+        Modifier.Not,
     ]
 
-    export let child_nodes;
+    export let child_nodes: ChildNode[];
     export let search_options: SearchOption[];
     export let root_add_function = null;
-    export let modifier = "and";
+    export let modifier = Modifier.And;
 
-    export async function create_query() {
+    export async function create_query() : Promise<any> {
         let promised_subqueries = child_elements.map(async (child) => await child.create_query());
         let unfiltered_subqueries = await Promise.all(promised_subqueries);
         let subqueries = unfiltered_subqueries.filter((query) => query != null);
@@ -25,11 +26,11 @@
         }
 
         // If there is only one AND or OR subquery, we don't need to use the modifier
-        if (subqueries.length == 1 && (modifier == "and" || modifier == "or")) {
+        if (subqueries.length == 1 && (modifier === Modifier.And || modifier === Modifier.Or)) {
             return subqueries[0];
         }
 
-        if (modifier == "not") {
+        if (modifier === Modifier.Not) {
             return {
                 type: 'modifier',
                 query: {
@@ -42,7 +43,7 @@
         return {
             type: 'modifier',
             query: {
-                type: modifier,
+                type: modifier_names[modifier],
                 queries: subqueries,
             }
         };
@@ -58,7 +59,7 @@
     }
 
     function add_child_modifier_node() {
-        child_nodes.push({type: "modifier", data: [], modifier: "and"});
+        child_nodes.push({type: "modifier", data: [], modifier: Modifier.And});
         child_nodes = child_nodes;
     }
 
@@ -80,7 +81,7 @@
             <button on:click={root_add_function} class="add-parent-button add-button">+</button>
         {/if}
         <div class="parent-node" on:click={change_modifier_type}>
-            {modifier.toUpperCase()}
+            {modifier_names[modifier].toUpperCase()}
         </div>
         <div class="horizontal-line" style="background: {child_nodes.length > 0 ? 'var(--child-line-color)' : 'none'}"></div>
         <div class="add-child-buttons">

@@ -6,7 +6,7 @@
 
     export let search_options: SearchOption[] = [];
 
-    export async function create_query() {
+    export async function create_query() : Promise<any> {
         return {
             type: 'quantity',
             query: await selected.get_query(selected_operator, await input.get_value()),
