@@ -19,9 +19,18 @@
             input: InputType.Float,
             get_query: (selected_operator: Operation, input) => {
                 const op = operator_names[selected_operator];
-                let molecular_weight = {value: input.value, type: op};
+                let molecular_weight;
                 if (selected_operator === Operation.Equal) {
-                    molecular_weight.tolerance = input.tolerance;
+                    molecular_weight = {
+                        value: input.value,
+                        type: op,
+                        tolerance: input.tolerance,
+                    }
+                } else {
+                    molecular_weight = {
+                        value: input.value,
+                        type: op,
+                    }
                 }
                 return {molecular_weight: molecular_weight, type: 'molecularweight'};
             },
