@@ -5,7 +5,7 @@
 
     export let search_results: any;
 
-    type SearchComponent = SubstanceSearch | ReactionSearch | RetrosynthesisSearch;
+    type SearchComponent = typeof SubstanceSearch | typeof ReactionSearch | typeof RetrosynthesisSearch;
 
     enum SearchType {
         Substance,
