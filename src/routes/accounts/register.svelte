@@ -1,6 +1,6 @@
 <script lang="ts">
     import { useForm } from "svelte-use-form";
-    import { page_name, API_URL } from "../../stores.ts";
+    import { page_name, API_URL } from "../../stores";
     import { format_error } from "./error_formatter";
 
     page_name.set("Register");

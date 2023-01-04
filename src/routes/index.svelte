@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {page_name} from "../stores.ts";
+    import {page_name} from "../stores";
     import SearchBox from "$lib/searchbox/SearchBox.svelte";
     import Contribute from "../lib/Contribute.svelte";
     import SearchResults from "../lib/searchresults/SearchResults.svelte";
