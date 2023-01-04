@@ -13,7 +13,7 @@
     }
 
     let selected_name = null;
-    let selected_operator_symbol = null;
+    let selected_operator_symbol: string;
     let dropdown_options = search_options.map(option => option.name);
     let input = null;
 

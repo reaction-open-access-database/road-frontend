@@ -1,5 +1,5 @@
 <script lang="ts">
-    let footer_height;
+    let footer_height: number;
 </script>
 
 <div id="footer-spacer" style="height: {footer_height}px"></div>

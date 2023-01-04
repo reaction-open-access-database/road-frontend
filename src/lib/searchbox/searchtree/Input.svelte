@@ -14,10 +14,10 @@
         }
     }
 
-    let ketcher_frame = null;
-    let float_value = null;
-    let float_tolerance = 0.5;
-    let string_value = null;
+    let ketcher_frame: HTMLIFrameElement;
+    let float_value: number;
+    let float_tolerance: number = 0.5;
+    let string_value: string;
 </script>
 
 {#if type === InputType.Structure}
