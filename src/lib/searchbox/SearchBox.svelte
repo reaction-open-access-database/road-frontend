@@ -5,14 +5,22 @@
 
     export let search_results: any;
 
+    type SearchComponent = typeof SubstanceSearch | typeof ReactionSearch | typeof RetrosynthesisSearch;
+
     enum SearchType {
-        Substance = SubstanceSearch,
-        Reaction = ReactionSearch,
-        Retrosynthesis = RetrosynthesisSearch,
+        Substance,
+        Reaction,
+        Retrosynthesis,
+    }
+
+    const search_type_component: { [key in SearchType] : SearchComponent } = {
+        [SearchType.Substance]: SubstanceSearch,
+        [SearchType.Reaction]: ReactionSearch,
+        [SearchType.Retrosynthesis]: RetrosynthesisSearch,
     }
 
     let search_type: SearchType = SearchType.Substance;
-    let search_component: SubstanceSearch | ReactionSearch | RetrosynthesisSearch;
+    let search_component: SearchComponent;
 </script>
 
 <div id="search-box">
@@ -20,7 +28,7 @@
         <button class="option" on:click={() => search_type = SearchType.Substance}>Substance</button>
     </div>
 
-    <svelte:component this={search_type} bind:this={search_component} />
+    <svelte:component this={search_type_component[search_type]} bind:this={search_component} />
 
     <button id="search-button" on:click={() => {search_results = search_component.search()}}>Search</button>
 </div>
