@@ -30,7 +30,7 @@
             name: 'Molecular Formula',
             operators: [Operation.Equal],
             input: InputType.String,
-            get_query: (selected_operator, input) => {
+            get_query: (_selected_operator, input) => {
                 return {type: 'molecularformula', atoms: parse_string_molecular_formula(input)}
             },
         },
