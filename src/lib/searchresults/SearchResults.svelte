@@ -1,7 +1,8 @@
 <script lang="ts">
     import SearchResult from "./SearchResult.svelte";
+    import type { Molecule } from "../../types";
 
-    export let search_results;
+    export let search_results: Molecule[] | undefined | null;
 </script>
 
 {#await search_results}

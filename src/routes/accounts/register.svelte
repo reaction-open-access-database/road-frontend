@@ -1,6 +1,6 @@
 <script lang="ts">
     import { useForm } from "svelte-use-form";
-    import { page_name, API_URL } from "../../stores.ts";
+    import { page_name, API_URL } from "../../stores";
     import { format_error } from "./error_formatter";
 
     page_name.set("Register");
@@ -11,19 +11,14 @@
 
     let verification_email_sent = false;
 
-    async function register(e) {
-        const form_data = new FormData(e.target);
-
-        let data = {};
-        for (let [key, value] of form_data.entries()) {
-            data[key] = value;
-        }
+    async function register(e: SubmitEvent) {
+        const form_data = new FormData(e.target as HTMLFormElement);
 
         let post_data = {
-            username: data['username'],
-            email: data['email'],
-            password1: data['password'],
-            password2: data['password'],
+            username: form_data.get('username'),
+            email: form_data.get('email'),
+            password1: form_data.get('password'),
+            password2: form_data.get('password'),
         }
 
         const register_url = new URL('/register/', API_URL);

@@ -1,19 +1,21 @@
 <script lang="ts">
     import SearchTreeModifier from "./SearchTreeModifier.svelte";
     import SearchTreeLeaf from "./SearchTreeLeaf.svelte";
+    import { Modifier } from "../../../types";
+    import type { SearchOption, ChildNode } from "../../../types";
 
-    export let search_options;
+    export let search_options: SearchOption[];
 
     export function create_query() {
         return child_element.create_query();
     }
 
-    let child_node = {type: "modifier", data: [], modifier: "and"};
-    let child_element;
+    let child_node: ChildNode = {type: "modifier", data: [], modifier: Modifier.And};
+    let child_element: SearchTreeLeaf | SearchTreeModifier;
 
     function create_root_node() {
         console.log(child_node);
-        child_node = {type: "modifier", data: [child_node], modifier: "and"};
+        child_node = {type: "modifier", data: [child_node], modifier: Modifier.And};
         console.log(child_node);
     }
 </script>
@@ -22,7 +24,7 @@
     {#if child_node.type === "modifier"}
         <SearchTreeModifier child_nodes={child_node.data} {search_options} bind:modifier={child_node.modifier} bind:this={child_element} root_add_function={create_root_node} />
     {:else if child_node.type === "leaf"}
-        <SearchTreeLeaf {search_options} bind:this={child_element} root_add_function={create_root_node} />
+        <SearchTreeLeaf {search_options} bind:this={child_element} />
     {/if}
 </div>
 

@@ -4,8 +4,9 @@
 
 <script lang="ts">
     import { afterUpdate } from "svelte";
+    import type { Molecule } from "../../types";
 
-    export let result;
+    export let result: Molecule;
 
     afterUpdate(() => {
         if (!drawings_loaded) {
