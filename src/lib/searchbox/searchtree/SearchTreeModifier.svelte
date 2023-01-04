@@ -13,7 +13,7 @@
     export let child_nodes: ChildNode[];
     export let search_options: SearchOption[];
     export let root_add_function: (() => void) | null = null;
-    export let modifier = Modifier.And;
+    export let modifier: Modifier = Modifier.And;
 
     export async function create_query() : Promise<any> {
         let promised_subqueries = child_elements.map(async (child) => await child.create_query());
