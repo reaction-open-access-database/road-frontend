@@ -2,11 +2,12 @@
     import {API_URL, page_name, user} from '../stores';
     import Input from "../lib/searchbox/searchtree/Input.svelte";
     import { format_error } from "./accounts/error_formatter";
+    import { InputType, Operation } from "../types";
 
     page_name.set("Create Molecule");
 
-    let input;
-    let name;
+    let input: Input;
+    let name: string;
 
     let error = '';
 
@@ -45,7 +46,7 @@
 </script>
 
 <main>
-    <Input type="structure" operator="=" bind:this={input} />
+    <Input type={InputType.Structure} operator={Operation.Equal} bind:this={input} />
     <div id="other-information">
         <input type="text" placeholder="Name" bind:value={name} />
         <button on:click={create_molecule} id="create-button">Create</button>

@@ -1,22 +1,31 @@
 <script lang="ts">
     import SearchTreeLeaf from "./SearchTreeLeaf.svelte";
     import SearchTreeModifier from "./SearchTreeModifier.svelte";
+    import { Modifier, modifier_names } from "../../../types";
+    import type { SearchOption, ChildNode } from "../../../types";
 
     const MODIFIER_TYPES = [
-        "and",
-        "or",
-        "not",
+        Modifier.And,
+        Modifier.Or,
+        Modifier.Not,
     ]
 
-    export let child_nodes;
-    export let search_options;
-    export let root_add_function = null;
-    export let modifier = "and";
+    export let child_nodes: ChildNode[];
+    export let search_options: SearchOption[];
+    export let root_add_function: (() => void) | null = null;
+    export let modifier: Modifier = Modifier.And;
 
-    export async function create_query() {
+    export async function create_query() : Promise<any> {
         let promised_subqueries = child_elements.map(async (child) => await child.create_query());
         let unfiltered_subqueries = await Promise.all(promised_subqueries);
         let subqueries = unfiltered_subqueries.filter((query) => query != null);
+
+        // If one of the subqueries is undefined, there was an error
+        for (const subquery of subqueries) {
+            if (subquery == undefined) {
+                return undefined;
+            }
+        }
 
         // If there are no subqueries, there's no point having the modifier
         if (subqueries.length == 0) {
@@ -24,11 +33,16 @@
         }
 
         // If there is only one AND or OR subquery, we don't need to use the modifier
-        if (subqueries.length == 1 && (modifier == "and" || modifier == "or")) {
+        if (subqueries.length == 1 && (modifier === Modifier.And || modifier === Modifier.Or)) {
             return subqueries[0];
         }
 
-        if (modifier == "not") {
+        if (modifier === Modifier.Not) {
+            if (subqueries.length > 1) {
+                // TODO: Display a more useful error to the user
+                console.error("Cannot have more than one subquery for a NOT modifier");
+                return undefined;
+            }
             return {
                 type: 'modifier',
                 query: {
@@ -41,15 +55,14 @@
         return {
             type: 'modifier',
             query: {
-                type: modifier,
+                type: modifier_names[modifier],
                 queries: subqueries,
             }
         };
     }
 
-    let children = [];
-    let child_elements = [];
-    let parent;
+    let children: HTMLDivElement[] = [];
+    let child_elements: (SearchTreeModifier | SearchTreeLeaf)[] = [];
 
     function add_child_leaf_node() {
         child_nodes.push({type: "leaf", data: {}});
@@ -57,7 +70,7 @@
     }
 
     function add_child_modifier_node() {
-        child_nodes.push({type: "modifier", data: [], modifier: "and"});
+        child_nodes.push({type: "modifier", data: [], modifier: Modifier.And});
         child_nodes = child_nodes;
     }
 
@@ -67,19 +80,19 @@
         modifier = MODIFIER_TYPES[next_modifier_index];
     }
 
-    function remove_child(child_index) {
+    function remove_child(child_index: number) {
         child_nodes.splice(child_index, 1);
         child_nodes = child_nodes;
     }
 </script>
 
-<div class="parent" bind:this={parent}>
+<div class="parent">
     <div class="parent-container">
         {#if root_add_function != null}
             <button on:click={root_add_function} class="add-parent-button add-button">+</button>
         {/if}
         <div class="parent-node" on:click={change_modifier_type}>
-            {modifier.toUpperCase()}
+            {modifier_names[modifier].toUpperCase()}
         </div>
         <div class="horizontal-line" style="background: {child_nodes.length > 0 ? 'var(--child-line-color)' : 'none'}"></div>
         <div class="add-child-buttons">

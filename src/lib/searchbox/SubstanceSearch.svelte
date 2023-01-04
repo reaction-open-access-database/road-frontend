@@ -1,37 +1,63 @@
 <script lang="ts">
     import SearchTree from "./searchtree/SearchTree.svelte";
     import {API_URL} from "../../stores";
+    import {InputType, Operation, operator_names } from "../../types";
+    import type { SearchOption } from "../../types";
 
-    const operator_map = {'=': 'equal', '>': 'greaterthan', '>=': 'greaterthanorequal', '<': 'lessthan', '<=': 'lessthanorequal'};
-
-    const search_options = [
-        {name: 'Structure', operators: ['='], input: 'structure', get_query: (selected_operator, input) => {
-            return {value: {type: 'smiles', value: input}, type: 'structure', op: operator_map[selected_operator]};
-        }},
-        {name: 'Molecular Weight', operators: ['=', '>', '<', '>=', '<='], input: 'float', get_query: (selected_operator, input) => {
-            const op = operator_map[selected_operator];
-            let molecular_weight = {value: input.value, type: op};
-            if (op == 'equal') {
-                molecular_weight.tolerance = input.tolerance;
-            }
-            return {molecular_weight: molecular_weight, type: 'molecularweight'};
-        }},
-        {name: 'Molecular Formula', operators: ['='], input: 'string', get_query: (selected_operator, input) => {
-            return {type: 'molecularformula', atoms: parse_string_molecular_formula(input)}
-        }},
+    const search_options: SearchOption[] = [
+        {
+            name: 'Structure',
+            operators: [Operation.Equal],
+            input: InputType.Structure,
+            get_query: (selected_operator, input) => {
+                return {value: {type: 'smiles', value: input}, type: 'structure', op: operator_names[selected_operator]};
+            },
+        },
+        {
+            name: 'Molecular Weight',
+            operators: [Operation.Equal, Operation.GreaterThan, Operation.LessThan, Operation.GreaterThanOrEqual, Operation.LessThanOrEqual],
+            input: InputType.Float,
+            get_query: (selected_operator: Operation, input) => {
+                const op = operator_names[selected_operator];
+                let molecular_weight;
+                if (selected_operator === Operation.Equal) {
+                    molecular_weight = {
+                        value: input.value,
+                        type: op,
+                        tolerance: input.tolerance,
+                    }
+                } else {
+                    molecular_weight = {
+                        value: input.value,
+                        type: op,
+                    }
+                }
+                return {molecular_weight: molecular_weight, type: 'molecularweight'};
+            },
+        },
+        {
+            name: 'Molecular Formula',
+            operators: [Operation.Equal],
+            input: InputType.String,
+            get_query: (_selected_operator, input) => {
+                return {type: 'molecularformula', atoms: parse_string_molecular_formula(input)}
+            },
+        },
     ]
 
-    let search_tree;
+    let search_tree: SearchTree;
 
-    export async function search() {
+    export async function search() : Promise<any> {
         const query = await search_tree.create_query();
-        const string_query = JSON.stringify(query);
-
-        if (string_query == 'null') {
+        if (query == undefined || query == null) {
             return undefined;
         }
+        const string_query = JSON.stringify(query);
 
-        const molecule_query_url = new URL('/molecule-query/?', API_URL) + new URLSearchParams({query: string_query});
+        let molecule_query_url = new URL('/molecule-query/', API_URL);
+        const params = new URLSearchParams({query: string_query});
+        molecule_query_url.search = params.toString();
+
         const response = await fetch(molecule_query_url);
         const json = await response.json();
         console.log(json);
@@ -39,10 +65,10 @@
         return json;
     }
 
-    function parse_string_molecular_formula(molecular_formula) {
+    function parse_string_molecular_formula(molecular_formula: string) {
         const regex = /([A-Z][a-z]?)(\d*)/g;
         let match;
-        let parsed_molecular_formula = {};
+        let parsed_molecular_formula: { [element: string] : number } = {};
         while (match = regex.exec(molecular_formula)) {
             const element = match[1];
             const count = match[2] ? parseInt(match[2]) : 1;

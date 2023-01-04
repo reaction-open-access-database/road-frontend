@@ -1,6 +1,6 @@
 <script lang="ts">
     import { useForm } from "svelte-use-form";
-    import { page_name, API_URL, user } from "../../stores.ts";
+    import { page_name, API_URL, user } from "../../stores";
     import { format_error } from "./error_formatter";
 
     page_name.set("Login");
@@ -9,15 +9,13 @@
 
     let error_string = '';
 
-    async function login(e) {
-        const form_data = new FormData(e.target);
+    async function login(e: SubmitEvent) {
+        const form_data = new FormData(e.target as HTMLFormElement);
 
-        let data = {};
-        for (let [key, value] of form_data.entries()) {
-            data[key] = value;
-        }
-
-        let post_data = {password: data['password'], username: data['username']};
+        let post_data = {
+            password: form_data.get('password'),
+            username: form_data.get('username')
+        };
 
         const login_url = new URL('/login/', API_URL);
         const result = await fetch(login_url, {
@@ -30,7 +28,7 @@
 
         if (result.ok) {
             let data = await result.json();
-            data['username'] = post_data['username'];
+            data['username'] = post_data.username;
             user.set(data);
             window.location.href = '/';
         } else {
