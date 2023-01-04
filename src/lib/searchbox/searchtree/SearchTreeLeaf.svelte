@@ -9,7 +9,7 @@
     export async function create_query() : Promise<any> {
         return {
             type: 'quantity',
-            query: await selected.get_query(selected_operator, await input.get_value()),
+            query: await selected?.get_query(selected_operator, await input.get_value()),
         };
     }
 
@@ -17,6 +17,7 @@
     let selected_operator_symbol: string;
     let dropdown_options = search_options.map(option => option.name);
     let input: Input;
+    let selected: SearchOption | undefined;
 
     $: selected_operator = symbol_operators[selected_operator_symbol];
     $: selected = search_options.find(option => option.name == selected_name);

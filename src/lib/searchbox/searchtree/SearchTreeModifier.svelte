@@ -20,6 +20,13 @@
         let unfiltered_subqueries = await Promise.all(promised_subqueries);
         let subqueries = unfiltered_subqueries.filter((query) => query != null);
 
+        // If one of the subqueries is undefined, there was an error
+        for (const subquery of subqueries) {
+            if (subquery == undefined) {
+                return undefined;
+            }
+        }
+
         // If there are no subqueries, there's no point having the modifier
         if (subqueries.length == 0) {
             return null;

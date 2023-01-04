@@ -40,11 +40,10 @@
 
     export async function search() : Promise<any> {
         const query = await search_tree.create_query();
-        const string_query = JSON.stringify(query);
-
-        if (string_query == 'null') {
+        if (query == undefined || query == null) {
             return undefined;
         }
+        const string_query = JSON.stringify(query);
 
         const molecule_query_url = new URL('/molecule-query/?', API_URL) + new URLSearchParams({query: string_query});
         const response = await fetch(molecule_query_url);
