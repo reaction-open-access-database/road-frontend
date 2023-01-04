@@ -28,7 +28,7 @@ export const operator_symbols: { [key in Operation] : string } = {
     [Operation.LessThanOrEqual]: '<=',
 }
 
-export const symbol_operators = {
+export const symbol_operators: { [symbol: string] : Operation } = {
     '=': Operation.Equal,
     '>': Operation.GreaterThan,
     '>=': Operation.GreaterThanOrEqual,
