@@ -45,7 +45,10 @@
         }
         const string_query = JSON.stringify(query);
 
-        const molecule_query_url = new URL('/molecule-query/?', API_URL) + new URLSearchParams({query: string_query});
+        let molecule_query_url = new URL('/molecule-query/', API_URL);
+        const params = new URLSearchParams({query: string_query});
+        molecule_query_url.search = params.toString();
+
         const response = await fetch(molecule_query_url);
         const json = await response.json();
         console.log(json);
