@@ -1,7 +1,8 @@
 <script lang="ts">
     import Input from "./Input.svelte";
     import Dropdown from "./Dropdown.svelte";
-    import {operator_symbols, SearchOption, symbol_operators} from "../../../types";
+    import {operator_symbols, symbol_operators} from "../../../types";
+    import type { SearchOption } from "../../../types";
 
     export let search_options: SearchOption[] = [];
 

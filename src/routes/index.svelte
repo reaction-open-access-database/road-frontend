@@ -6,7 +6,7 @@
 
     page_name.set("Home");
 
-    let search_results = null;
+    let search_results: any = null;
 </script>
 
 <main>

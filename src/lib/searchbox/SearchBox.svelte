@@ -3,7 +3,7 @@
     import ReactionSearch from "./ReactionSearch.svelte";
     import RetrosynthesisSearch from "./RetrosynthesisSearch.svelte";
 
-    export let search_results;
+    export let search_results: any;
 
     enum SearchType {
         Substance = SubstanceSearch,

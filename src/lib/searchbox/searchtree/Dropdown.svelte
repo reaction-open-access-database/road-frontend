@@ -1,14 +1,14 @@
 <script lang="ts">
-    export let selected: string;
+    export let selected: string | null;
     export let options: string[] = [];
     export let height = "calc(2em + 2px)"; // 2px for the border
     export let width = "12em";
 
-    $: selected = options[0];
+    $: selected = options.length ? selected : null;
 
     let visible = false;
     let active: boolean;
-    let contents;
+    let contents: string;
 
     // If there is only one option available,
     // don't bother asking the user to select one

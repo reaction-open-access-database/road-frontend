@@ -1,6 +1,7 @@
 <script lang="ts">
     import SearchTreeLeaf from "./SearchTreeLeaf.svelte";
     import SearchTreeModifier from "./SearchTreeModifier.svelte";
+    import type {SearchOption} from "../../../types";
 
     const MODIFIER_TYPES = [
         "and",
@@ -9,7 +10,7 @@
     ]
 
     export let child_nodes;
-    export let search_options;
+    export let search_options: SearchOption[];
     export let root_add_function = null;
     export let modifier = "and";
 
@@ -47,9 +48,9 @@
         };
     }
 
-    let children = [];
-    let child_elements = [];
-    let parent;
+    let children: HTMLDivElement[] = [];
+    let child_elements: (SearchTreeModifier | SearchTreeLeaf)[] = [];
+    let parent: HTMLDivElement;
 
     function add_child_leaf_node() {
         child_nodes.push({type: "leaf", data: {}});

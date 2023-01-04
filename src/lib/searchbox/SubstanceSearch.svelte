@@ -1,7 +1,8 @@
 <script lang="ts">
     import SearchTree from "./searchtree/SearchTree.svelte";
     import {API_URL} from "../../stores";
-    import {InputType, Operation, operator_names, SearchOption } from "../../types";
+    import {InputType, Operation, operator_names } from "../../types";
+    import type { SearchOption } from "../../types";
 
     const search_options: SearchOption[] = [
         {
@@ -37,7 +38,7 @@
 
     let search_tree;
 
-    export async function search() {
+    export async function search() : Promise<any> {
         const query = await search_tree.create_query();
         const string_query = JSON.stringify(query);
 
