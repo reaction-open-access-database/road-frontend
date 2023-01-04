@@ -22,7 +22,7 @@
 </script>
 
 {#if type === InputType.Structure}
-    <iframe id="ketcher-frame" src="ketcher/index.html" width="800" height="600" bind:this={ketcher_frame}></iframe>
+    <iframe id="ketcher-frame" src="ketcher/index.html" width="800" height="600" bind:this={ketcher_frame} title="molecule-structure-input"></iframe>
 {:else if type === InputType.Float}
     <input type="number" step="0.1" bind:value={float_value}>
     {#if operator === Operation.Equal}
