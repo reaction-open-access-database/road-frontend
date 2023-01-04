@@ -2,7 +2,7 @@
     import SearchTreeModifier from "./SearchTreeModifier.svelte";
     import SearchTreeLeaf from "./SearchTreeLeaf.svelte";
     import { Modifier } from "../../../types";
-    import type { SearchOption } from "../../../types";
+    import type { SearchOption, ChildNode } from "../../../types";
 
     export let search_options: SearchOption[];
 
@@ -10,7 +10,7 @@
         return child_element.create_query();
     }
 
-    let child_node = {type: "modifier", data: [], modifier: Modifier.And};
+    let child_node: ChildNode = {type: "modifier", data: [], modifier: Modifier.And};
     let child_element: SearchTreeLeaf | SearchTreeModifier;
 
     function create_root_node() {
