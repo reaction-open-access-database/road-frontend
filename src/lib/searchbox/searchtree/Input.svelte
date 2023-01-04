@@ -5,7 +5,7 @@
     export let operator: Operation;
     export async function get_value() {
         if (type === InputType.Structure) {
-            const ketcher = ketcher_frame.contentWindow.ketcher;
+            const ketcher = ketcher_frame.contentWindow.ketcher; // @ts-ignore
             return await ketcher.getSmiles();
         } else if (type === InputType.Float) {
             return {value: float_value, tolerance: float_tolerance};
