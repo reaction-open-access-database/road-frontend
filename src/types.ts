@@ -35,3 +35,10 @@ export const symbol_operators = {
     '<': Operation.LessThan,
     '<=': Operation.LessThanOrEqual,
 }
+
+export type SearchOption = {
+    name: string,
+    operators: Operation[],
+    input: InputType,
+    get_query: (selected_operator: Operation, input: any) => any,
+}

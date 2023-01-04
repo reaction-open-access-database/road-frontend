@@ -1,9 +1,9 @@
 <script lang="ts">
     import Input from "./Input.svelte";
     import Dropdown from "./Dropdown.svelte";
-    import { operator_symbols, symbol_operators } from "../../../types";
+    import {operator_symbols, SearchOption, symbol_operators} from "../../../types";
 
-    export let search_options = [];
+    export let search_options: SearchOption[] = [];
 
     export async function create_query() {
         return {
@@ -12,10 +12,10 @@
         };
     }
 
-    let selected_name = null;
+    let selected_name: string;
     let selected_operator_symbol: string;
     let dropdown_options = search_options.map(option => option.name);
-    let input = null;
+    let input: Input;
 
     $: selected_operator = symbol_operators[selected_operator_symbol];
     $: selected = search_options.find(option => option.name == selected_name);

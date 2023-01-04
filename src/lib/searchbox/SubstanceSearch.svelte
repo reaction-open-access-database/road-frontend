@@ -1,23 +1,38 @@
 <script lang="ts">
     import SearchTree from "./searchtree/SearchTree.svelte";
     import {API_URL} from "../../stores";
-    import {InputType, Operation, operator_names } from "../../types";
+    import {InputType, Operation, operator_names, SearchOption } from "../../types";
 
-    const search_options = [
-        {name: 'Structure', operators: [Operation.Equal], input: InputType.Structure, get_query: (selected_operator, input) => {
-            return {value: {type: 'smiles', value: input}, type: 'structure', op: operator_names[selected_operator]};
-        }},
-        {name: 'Molecular Weight', operators: [Operation.Equal, Operation.GreaterThan, Operation.LessThan, Operation.GreaterThanOrEqual, Operation.LessThanOrEqual], input: InputType.Float, get_query: (selected_operator: Operation, input) => {
-            const op = operator_names[selected_operator];
-            let molecular_weight = {value: input.value, type: op};
-            if (selected_operator === Operation.Equal) {
-                molecular_weight.tolerance = input.tolerance;
-            }
-            return {molecular_weight: molecular_weight, type: 'molecularweight'};
-        }},
-        {name: 'Molecular Formula', operators: [Operation.Equal], input: InputType.String, get_query: (selected_operator, input) => {
-            return {type: 'molecularformula', atoms: parse_string_molecular_formula(input)}
-        }},
+    const search_options: SearchOption[] = [
+        {
+            name: 'Structure',
+            operators: [Operation.Equal],
+            input: InputType.Structure,
+            get_query: (selected_operator, input) => {
+                return {value: {type: 'smiles', value: input}, type: 'structure', op: operator_names[selected_operator]};
+            },
+        },
+        {
+            name: 'Molecular Weight',
+            operators: [Operation.Equal, Operation.GreaterThan, Operation.LessThan, Operation.GreaterThanOrEqual, Operation.LessThanOrEqual],
+            input: InputType.Float,
+            get_query: (selected_operator: Operation, input) => {
+                const op = operator_names[selected_operator];
+                let molecular_weight = {value: input.value, type: op};
+                if (selected_operator === Operation.Equal) {
+                    molecular_weight.tolerance = input.tolerance;
+                }
+                return {molecular_weight: molecular_weight, type: 'molecularweight'};
+            },
+        },
+        {
+            name: 'Molecular Formula',
+            operators: [Operation.Equal],
+            input: InputType.String,
+            get_query: (selected_operator, input) => {
+                return {type: 'molecularformula', atoms: parse_string_molecular_formula(input)}
+            },
+        },
     ]
 
     let search_tree;
