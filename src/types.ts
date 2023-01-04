@@ -69,5 +69,5 @@ export type Molecule = {
     name: string,
     mw: number,
     formula: string,
-    svg: string,
+    smiles: string,
 }
