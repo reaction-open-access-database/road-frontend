@@ -20,7 +20,7 @@
         <a href={option.href}>
             <div class="icon">
                 <div class="circle"></div>
-                <img src={option.image_path} />
+                <img src={option.image_path} alt={option.alt} />
             </div>
 
             <p>{option.name}</p>
