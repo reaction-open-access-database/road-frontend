@@ -36,7 +36,7 @@
         },
     ]
 
-    let search_tree;
+    let search_tree: SearchTree;
 
     export async function search() : Promise<any> {
         const query = await search_tree.create_query();
@@ -54,7 +54,7 @@
         return json;
     }
 
-    function parse_string_molecular_formula(molecular_formula) {
+    function parse_string_molecular_formula(molecular_formula: string) {
         const regex = /([A-Z][a-z]?)(\d*)/g;
         let match;
         let parsed_molecular_formula = {};

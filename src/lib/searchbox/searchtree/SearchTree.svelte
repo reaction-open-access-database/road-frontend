@@ -1,16 +1,16 @@
 <script lang="ts">
     import SearchTreeModifier from "./SearchTreeModifier.svelte";
     import SearchTreeLeaf from "./SearchTreeLeaf.svelte";
-    import { Modifier } from "../../../types";
+    import { Modifier, SearchOption } from "../../../types";
 
-    export let search_options;
+    export let search_options: SearchOption[];
 
     export function create_query() {
         return child_element.create_query();
     }
 
     let child_node = {type: "modifier", data: [], modifier: Modifier.And};
-    let child_element;
+    let child_element: SearchTreeLeaf | SearchTreeModifier;
 
     function create_root_node() {
         console.log(child_node);

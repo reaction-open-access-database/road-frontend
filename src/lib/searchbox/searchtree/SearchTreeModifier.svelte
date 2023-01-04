@@ -12,7 +12,7 @@
 
     export let child_nodes: ChildNode[];
     export let search_options: SearchOption[];
-    export let root_add_function = null;
+    export let root_add_function: (() => void) | null = null;
     export let modifier = Modifier.And;
 
     export async function create_query() : Promise<any> {
@@ -51,7 +51,6 @@
 
     let children: HTMLDivElement[] = [];
     let child_elements: (SearchTreeModifier | SearchTreeLeaf)[] = [];
-    let parent: HTMLDivElement;
 
     function add_child_leaf_node() {
         child_nodes.push({type: "leaf", data: {}});
@@ -69,13 +68,13 @@
         modifier = MODIFIER_TYPES[next_modifier_index];
     }
 
-    function remove_child(child_index) {
+    function remove_child(child_index: number) {
         child_nodes.splice(child_index, 1);
         child_nodes = child_nodes;
     }
 </script>
 
-<div class="parent" bind:this={parent}>
+<div class="parent">
     <div class="parent-container">
         {#if root_add_function != null}
             <button on:click={root_add_function} class="add-parent-button add-button">+</button>

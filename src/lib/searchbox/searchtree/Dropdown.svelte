@@ -28,7 +28,7 @@
         contents = selected;
     }
 
-    function set_selected(option) {
+    function set_selected(option: string) {
         selected = option;
         visible = false;
     }
