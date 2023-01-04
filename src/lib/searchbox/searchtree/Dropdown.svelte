@@ -4,7 +4,7 @@
     export let height = "calc(2em + 2px)"; // 2px for the border
     export let width = "12em";
 
-    $: selected = options.length ? selected : null;
+    $: selected = options.length ? options[0] : null;
 
     let visible = false;
     let active: boolean;
