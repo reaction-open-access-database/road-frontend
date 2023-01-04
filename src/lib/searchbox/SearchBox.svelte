@@ -5,7 +5,8 @@
 
     export let search_results: any;
 
-    type SearchComponent = typeof SubstanceSearch | typeof ReactionSearch | typeof RetrosynthesisSearch;
+    type SearchComponent = SubstanceSearch | ReactionSearch | RetrosynthesisSearch;
+    type TypeOfSearchComponent = typeof SubstanceSearch | typeof ReactionSearch | typeof RetrosynthesisSearch;
 
     enum SearchType {
         Substance,
@@ -13,10 +14,10 @@
         Retrosynthesis,
     }
 
-    const search_type_component: { [key in SearchType] : SearchComponent } = {
-        [SearchType.Substance]: SubstanceSearch,
-        [SearchType.Reaction]: ReactionSearch,
-        [SearchType.Retrosynthesis]: RetrosynthesisSearch,
+    const search_type_component: { [key in SearchType] : TypeOfSearchComponent } = {
+        [SearchType.Substance]: typeof SubstanceSearch,
+        [SearchType.Reaction]: typeof ReactionSearch,
+        [SearchType.Retrosynthesis]: typeof RetrosynthesisSearch,
     }
 
     let search_type: SearchType = SearchType.Substance;
