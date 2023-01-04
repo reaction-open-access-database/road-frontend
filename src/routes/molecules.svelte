@@ -6,7 +6,7 @@
 
     const molecule = $page.url.searchParams.get('molecule');
 
-    let molecules = [];
+    let molecules: any[] = [];
 
     onMount(async () => {
         if (molecule === null) {
