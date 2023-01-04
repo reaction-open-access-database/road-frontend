@@ -1,5 +1,7 @@
 <script lang="ts">
-    export let result;
+    import type { Molecule } from "../../types";
+
+    export let result: Molecule;
 </script>
 
 <div class="search-result">

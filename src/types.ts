@@ -64,3 +64,10 @@ export const modifier_names: { [key in Modifier] : string } = {
     [Modifier.Or]: 'or',
     [Modifier.Not]: 'not',
 }
+
+export type Molecule = {
+    name: string,
+    mw: number,
+    formula: string,
+    svg: string,
+}
