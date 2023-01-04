@@ -15,9 +15,9 @@
     }
 
     const search_type_component: { [key in SearchType] : TypeOfSearchComponent } = {
-        [SearchType.Substance]: typeof SubstanceSearch,
-        [SearchType.Reaction]: typeof ReactionSearch,
-        [SearchType.Retrosynthesis]: typeof RetrosynthesisSearch,
+        [SearchType.Substance]: SubstanceSearch,
+        [SearchType.Reaction]: ReactionSearch,
+        [SearchType.Retrosynthesis]: RetrosynthesisSearch,
     }
 
     let search_type: SearchType = SearchType.Substance;
