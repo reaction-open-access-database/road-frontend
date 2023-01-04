@@ -31,6 +31,11 @@
         }
 
         if (modifier === Modifier.Not) {
+            if (subqueries.length > 1) {
+                // TODO: Display a more useful error to the user
+                console.error("Cannot have more than one subquery for a NOT modifier");
+                return undefined;
+            }
             return {
                 type: 'modifier',
                 query: {
