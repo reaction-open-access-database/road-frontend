@@ -11,6 +11,7 @@
     afterUpdate(() => {
         if (!drawings_loaded) {
             drawings_loaded = true;
+            // @ts-ignore
             SmiDrawer.apply();
         }
     });
@@ -46,6 +47,11 @@
         padding: 10px;
 
         margin: 10px;
+    }
+
+    .search-result > svg {
+        width: 200px;
+        height: 200px;
     }
 
     .other-info {
