@@ -6,6 +6,10 @@
 
 <footer bind:clientHeight={footer_height}>
     <div class="column">
+        <p>About</p>
+        <a href="/about/acknowledgements">Acknowledgements</a>
+    </div>
+    <div class="column">
         <p>Tools</p>
         <a href="/">Substance Search</a>
         <a href="/create-molecule">Create Molecule</a>
