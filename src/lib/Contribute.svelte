@@ -1,7 +1,7 @@
 <script lang="ts">
     const options = [
         {
-            name: "Add Molecule",
+            name: "Create Molecule",
             href: "/create-molecule",
             image_path: "/plus.svg",
             alt: "white plus sign",
