@@ -6,7 +6,7 @@
     <p id="introduction">The following people, groups and projects are gratefully acknowledged for their contributions to ROAD:</p>
     <ul>
         <li>
-            The work of the Jean-Louis Reymond Research Group in developing the SmilesDrawer library (<a href="http://dx.doi.org/10.1021/acs.jcim.7b00425">10.1021/acs.jcim.7b00425</a>).
+            The work of the Jean-Louis Reymond Research Group in developing the SmilesDrawer library (<a href="https://dx.doi.org/10.1021/acs.jcim.7b00425">10.1021/acs.jcim.7b00425</a>).
         </li>
         <li>
             The <a href="https://lifescience.opensource.epam.com/ketcher/">Ketcher</a> chemical structure editor.
