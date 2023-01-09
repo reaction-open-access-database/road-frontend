@@ -53,8 +53,7 @@
     }
 
     .molecule-structure {
-        max-width: 200px;
-        /*height: 00px;*/
+        width: 200px;
     }
 
     .other-info {
