@@ -9,11 +9,12 @@
         padding: 1,
     };
 
-    let molecule_structure;
+    let molecule_structure: HTMLCanvasElement;
 
     onMount(() => {
+        // @ts-ignore
         let sd = new SmiDrawer(molecule_options);
-        sd.drawMolecule(result.smiles, 'svg', 'light', (svg) => {
+        sd.drawMolecule(result.smiles, 'svg', 'light', (svg: HTMLOrSVGElement) => {
             sd.svgToCanvas(svg, molecule_structure);
         });
     })
