@@ -1,24 +1,37 @@
 <script context="module">
-    let drawings_loaded = false;
+    let molecule_options = {
+        terminalCarbons: true,
+        padding: 1,
+    };
+    let reaction_options = {};
+
+    let current_molecule_id = 0;
 </script>
 
 <script lang="ts">
-    import { afterUpdate } from "svelte";
+    import { onMount } from "svelte";
     import type { Molecule } from "../../types";
 
     export let result: Molecule;
 
-    afterUpdate(() => {
-        if (!drawings_loaded) {
-            drawings_loaded = true;
-            // @ts-ignore
-            SmiDrawer.apply();
-        }
-    });
+    let molecule_structure;
+
+    onMount(() => {
+        // let sd = new SmilesDrawer.Drawer(molecule_options);
+        // SmilesDrawer.parse(result.smiles, (tree) => {
+        //     sd.draw(tree, molecule_structure);
+        // });
+        let sd = new SmiDrawer(molecule_options);
+        sd.drawMolecule(result.smiles, 'svg', 'light', (svg) => {
+            sd.svgToCanvas(svg, molecule_structure);
+        });
+        // let sd = new SmiDrawer(molecule_options, reaction_options);
+        // sd.draw(result.smiles, '#' + molecule_structure.id);
+    })
 </script>
 
 <div class="search-result">
-    <svg data-smiles="{result.smiles}" />
+    <canvas id={'molecule-structure-' + current_molecule_id++} class="molecule-structure" bind:this={molecule_structure}></canvas>
     <table class="other-info">
         <tr>
             <td>Name</td>
@@ -49,9 +62,9 @@
         margin: 10px;
     }
 
-    .search-result > svg {
-        width: 200px;
-        height: 200px;
+    .molecule-structure {
+        max-width: 200px;
+        /*height: 00px;*/
     }
 
     .other-info {
