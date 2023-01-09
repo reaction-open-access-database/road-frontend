@@ -1,11 +1,27 @@
 <script lang="ts">
+    import { onMount } from "svelte";
     import type { Molecule } from "../../types";
 
     export let result: Molecule;
+
+    const molecule_options = {
+        terminalCarbons: true,
+        padding: 1,
+    };
+
+    let molecule_structure: HTMLCanvasElement;
+
+    onMount(() => {
+        // @ts-ignore
+        let sd = new SmiDrawer(molecule_options);
+        sd.drawMolecule(result.smiles, 'svg', 'light', (svg: HTMLOrSVGElement) => {
+            sd.svgToCanvas(svg, molecule_structure);
+        });
+    })
 </script>
 
 <div class="search-result">
-    {@html result.svg}
+    <canvas class="molecule-structure" bind:this={molecule_structure}></canvas>
     <table class="other-info">
         <tr>
             <td>Name</td>
@@ -34,6 +50,10 @@
         padding: 10px;
 
         margin: 10px;
+    }
+
+    .molecule-structure {
+        width: 200px;
     }
 
     .other-info {
