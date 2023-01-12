@@ -240,6 +240,10 @@
         display: none;
 
         font-size: 0.75em;
+
+        position: absolute;
+        left: 0;
+        transform: translateX(-120%);
     }
 
     .add-modifier-button {
@@ -253,9 +257,6 @@
 
     .parent-container:hover > .add-parent-button {
         display: block;
-        position: absolute;
-        left: 0;
-        transform: translateX(-120%);
     }
 
     .parent-container::before {
