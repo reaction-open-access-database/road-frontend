@@ -90,6 +90,8 @@
     <div class="parent-container">
         {#if root_add_function != null}
             <button on:click={root_add_function} class="add-parent-button add-button">+</button>
+        {:else if remove_self_function != null}
+            <button class="remove-child-button add-button" on:click={remove_self_function}>-</button>
         {/if}
         <div class="parent-node" on:click={change_modifier_type}>
             {modifier_names[modifier].toUpperCase()}
@@ -109,17 +111,18 @@
                     <div class="lower-vertical-line"></div>
                 </div>
                 <div class="child-node-container">
-                    <div class="before-child">
-                        <div class="child-line"></div>
-                        <button class="remove-child-button add-button" on:click={() => remove_child(i)}>-</button>
-                    </div>
-                    <div class="child-node">
-                        {#if child_node.type === "modifier"}
-                            <SearchTreeModifier child_nodes={child_node.data} {search_options} bind:modifier={child_node.modifier} bind:this={child_elements[i]} />
-                        {:else if child_node.type === "leaf"}
-                            <SearchTreeLeaf {search_options} bind:this={child_elements[i]} />
-                        {/if}
-                    </div>
+                    <div class="child-line"></div>
+                    {#if child_node.type === "modifier"}
+                        <SearchTreeModifier
+                                child_nodes={child_node.data}
+                                {search_options}
+                                bind:modifier={child_node.modifier}
+                                bind:this={child_elements[i]}
+                                remove_self_function={() => remove_child(i)}
+                        />
+                    {:else if child_node.type === "leaf"}
+                        <SearchTreeLeaf {search_options} bind:this={child_elements[i]} />
+                    {/if}
                 </div>
             </div>
         {/each}
@@ -259,6 +262,10 @@
         display: block;
     }
 
+    .parent-container:hover > .remove-child-button {
+        display: block;
+    }
+
     .parent-container::before {
         content: '';
         position: absolute;
@@ -272,17 +279,13 @@
     .remove-child-button {
         font-size: 0.75em;
         position: absolute;
-
-        transform: translate(25%, 25%);
+        left: 0;
+        transform: translate(-120%, 75%);
 
         z-index: 1;
 
         padding: 0;
 
         display: none;
-    }
-
-    .child-node-container:hover > .before-child > .remove-child-button {
-        display: block;
     }
 </style>
