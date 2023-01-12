@@ -14,6 +14,7 @@
     export let search_options: SearchOption[];
     export let root_add_function: (() => void) | null = null;
     export let modifier: Modifier = Modifier.And;
+    export let remove_self_function: (() => void) | null = null;
 
     export async function create_query() : Promise<any> {
         let promised_subqueries = child_elements.map(async (child) => await child.create_query());
@@ -61,7 +62,6 @@
         };
     }
 
-    let children: HTMLDivElement[] = [];
     let child_elements: (SearchTreeModifier | SearchTreeLeaf)[] = [];
 
     function add_child_leaf_node() {
@@ -102,7 +102,7 @@
     </div>
     <div class="children">
         {#each child_nodes as child_node, i (i)}
-            <div class="child" bind:this={children[i]}>
+            <div class="child">
                 <div class="vertical-line">
                     <div class="upper-vertical-line"></div>
                     <div class="central-vertical-line"></div>
