@@ -121,7 +121,11 @@
                                 remove_self_function={() => remove_child(i)}
                         />
                     {:else if child_node.type === "leaf"}
-                        <SearchTreeLeaf {search_options} bind:this={child_elements[i]} />
+                        <SearchTreeLeaf
+                                {search_options}
+                                bind:this={child_elements[i]}
+                                remove_self_function={() => remove_child(i)}
+                        />
                     {/if}
                 </div>
             </div>
