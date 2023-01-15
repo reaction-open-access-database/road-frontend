@@ -14,7 +14,7 @@ jobs:
         FAILED=0
         for ROUTE in $ROUTES; do
           if ! grep -q 'page_name.set' $ROUTE; then
-            echo "Page $ROUTE does not have a page_name variable"
+            echo "Page $ROUTE does not set the page name"
             FAILED=1
           fi
         done
