@@ -1,0 +1,23 @@
+name: Page Name
+
+on: [push]
+
+jobs:
+  page_name:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Check that the page name is set
+      run: |
+        ROUTES=$(git ls-files 'src/routes/*.svelte' | grep -v __)
+        FAILED=0
+        for ROUTE in $ROUTES; do
+          if ! grep -q 'page_name.set' $ROUTE; then
+            echo "Page $ROUTE does not have a page_name variable"
+            FAILED=1
+          fi
+        done
+        if [ $FAILED -eq 1 ]; then
+          exit 1
+        fi
