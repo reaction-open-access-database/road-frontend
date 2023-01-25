@@ -1,5 +1,7 @@
 <script lang="ts">
+    import { page_name } from "../../stores";
 
+    page_name.set("Acknowledgements");
 </script>
 
 <main>
