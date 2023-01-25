@@ -17,7 +17,7 @@
     export let remove_self_function: (() => void) | null = null;
 
     export async function create_query() : Promise<any> {
-        let promised_subqueries = child_elements.map(async (child) => await child.create_query());
+        let promised_subqueries = child_elements.filter((child) => child != null).map(async (child) => await child.create_query());
         let unfiltered_subqueries = await Promise.all(promised_subqueries);
         let subqueries = unfiltered_subqueries.filter((query) => query != null);
 
@@ -62,7 +62,7 @@
         };
     }
 
-    let child_elements: (SearchTreeModifier | SearchTreeLeaf)[] = [];
+    let child_elements: (SearchTreeModifier | SearchTreeLeaf | null)[] = [];
 
     function add_child_leaf_node() {
         child_nodes.push({type: "leaf", data: {}});
@@ -83,6 +83,9 @@
     function remove_child(child_index: number) {
         child_nodes.splice(child_index, 1);
         child_nodes = child_nodes;
+
+        child_elements.splice(child_index, 1);
+        child_elements = child_elements;
     }
 </script>
 
