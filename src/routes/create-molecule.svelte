@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {API_URL, page_name, user} from '../stores';
+    import { page_name, user } from '../stores';
     import Input from "../lib/searchbox/searchtree/Input.svelte";
     import { format_error } from "./accounts/error_formatter";
     import { InputType, Operation } from "../types";
@@ -26,7 +26,7 @@
 
         console.log(post_data);
 
-        const molecule_url = new URL('/molecules/', API_URL);
+        const molecule_url = new URL('/molecules/', import.meta.env.VITE_API_URL);
         const result = await fetch(molecule_url, {
             method: 'POST',
             headers: {

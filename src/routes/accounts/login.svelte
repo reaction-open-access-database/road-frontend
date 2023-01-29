@@ -1,6 +1,6 @@
 <script lang="ts">
     import { useForm } from "svelte-use-form";
-    import { page_name, API_URL, user } from "../../stores";
+    import { page_name, user } from "../../stores";
     import { format_error } from "./error_formatter";
 
     page_name.set("Login");
@@ -17,7 +17,7 @@
             username: form_data.get('username')
         };
 
-        const login_url = new URL('/login/', API_URL);
+        const login_url = new URL('/login/', import.meta.env.VITE_API_URL);
         const result = await fetch(login_url, {
             method: 'POST',
             body: JSON.stringify(post_data),

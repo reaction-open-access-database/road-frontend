@@ -2,7 +2,7 @@
     import SearchResults from "../lib/searchresults/SearchResults.svelte";
     import { onMount } from "svelte";
     import { page } from "$app/stores";
-    import { page_name, API_URL } from "../stores";
+    import { page_name } from "../stores";
 
     const molecule = $page.url.searchParams.get('molecule');
 
@@ -11,7 +11,7 @@
     onMount(async () => {
         if (molecule === null) {
             page_name.set("Molecules");
-            const molecule_url = new URL('/molecules/', API_URL);
+            const molecule_url = new URL('/molecules/', import.meta.env.VITE_API_URL);
             const result = await fetch(molecule_url);
 
             if (result.ok) {
@@ -19,7 +19,7 @@
             }
         } else {
             page_name.set("Molecule");
-            const molecule_url = new URL('/molecules/' + molecule, API_URL);
+            const molecule_url = new URL('/molecules/' + molecule, import.meta.env.VITE_API_URL);
             const result = await fetch(molecule_url);
 
             if (result.ok) {

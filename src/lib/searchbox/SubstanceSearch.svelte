@@ -1,6 +1,5 @@
 <script lang="ts">
     import SearchTree from "./searchtree/SearchTree.svelte";
-    import {API_URL} from "../../stores";
     import {InputType, Operation, operator_names } from "../../types";
     import type { SearchOption } from "../../types";
 
@@ -54,7 +53,7 @@
         }
         const string_query = JSON.stringify(query);
 
-        let molecule_query_url = new URL('/molecule-query/', API_URL);
+        let molecule_query_url = new URL('/molecule-query/', import.meta.env.VITE_API_URL);
         const params = new URLSearchParams({query: string_query});
         molecule_query_url.search = params.toString();
 
