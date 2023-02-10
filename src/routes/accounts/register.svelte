@@ -41,7 +41,7 @@
 
 <main>
     {#if verification_email_sent}
-        <p>Please check your inbox for the verification email.</p>
+        <p data-cy="message">Please check your inbox for the verification email.</p>
     {:else}
         <form use:form on:submit|preventDefault={register}>
             <div id="username-group">
@@ -61,7 +61,7 @@
 
             <p id="issue">{@html error_string}</p>
 
-            <button>
+            <button data-cy="register">
                 Register
             </button>
         </form>
