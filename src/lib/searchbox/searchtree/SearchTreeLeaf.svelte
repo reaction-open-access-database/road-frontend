@@ -5,6 +5,7 @@
     import type { SearchOption } from "../../../types";
 
     export let search_options: SearchOption[] = [];
+    export let remove_self_function: (() => void) | null = null;
 
     export async function create_query() : Promise<any> {
         return {
@@ -24,6 +25,9 @@
 </script>
 
 <div id="search-tree-leaf">
+    {#if remove_self_function != null}
+        <button class="remove-self-button" on:click={remove_self_function}>-</button>
+    {/if}
     <Dropdown bind:selected={selected_name} options={dropdown_options} />
 
     {#if selected != null}
@@ -38,5 +42,40 @@
         flex-direction: row;
 
         align-items: center;
+
+        position: relative;
+    }
+
+    .remove-self-button {
+        font-size: 0.75em;
+
+        position: absolute;
+        left: 0;
+        transform: translate(-120%, 75%);
+
+        z-index: 1;
+
+        padding: 0;
+
+        display: none;
+
+        background-color: var(--dark-background-color);
+        color: var(--light-text-color);
+
+        width: 1em;
+    }
+
+    #search-tree-leaf:hover > .remove-self-button {
+        display: block;
+    }
+
+    #search-tree-leaf::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1em;
+        height: 100%;
+        transform: translateX(-100%);
     }
 </style>

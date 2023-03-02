@@ -17,7 +17,8 @@
     export let remove_self_function: (() => void) | null = null;
 
     export async function create_query() : Promise<any> {
-        let promised_subqueries = child_elements.map(async (child) => await child.create_query());
+        // @ts-ignore (We filter out nulls, but TypeScript doesn't know that)
+        let promised_subqueries = child_elements.filter((child) => child != null).map(async (child) => await child.create_query());
         let unfiltered_subqueries = await Promise.all(promised_subqueries);
         let subqueries = unfiltered_subqueries.filter((query) => query != null);
 
@@ -62,7 +63,7 @@
         };
     }
 
-    let child_elements: (SearchTreeModifier | SearchTreeLeaf)[] = [];
+    let child_elements: (SearchTreeModifier | SearchTreeLeaf | null)[] = [];
 
     function add_child_leaf_node() {
         child_nodes.push({type: "leaf", data: {}});
@@ -83,6 +84,9 @@
     function remove_child(child_index: number) {
         child_nodes.splice(child_index, 1);
         child_nodes = child_nodes;
+
+        child_elements.splice(child_index, 1);
+        child_elements = child_elements;
     }
 </script>
 
@@ -90,6 +94,8 @@
     <div class="parent-container">
         {#if root_add_function != null}
             <button on:click={root_add_function} class="add-parent-button add-button">+</button>
+        {:else if remove_self_function != null}
+            <button class="remove-child-button add-button" on:click={remove_self_function}>-</button>
         {/if}
         <div class="parent-node" on:click={change_modifier_type}>
             {modifier_names[modifier].toUpperCase()}
@@ -109,17 +115,22 @@
                     <div class="lower-vertical-line"></div>
                 </div>
                 <div class="child-node-container">
-                    <div class="before-child">
-                        <div class="child-line"></div>
-                        <button class="remove-child-button add-button" on:click={() => remove_child(i)}>-</button>
-                    </div>
-                    <div class="child-node">
-                        {#if child_node.type === "modifier"}
-                            <SearchTreeModifier child_nodes={child_node.data} {search_options} bind:modifier={child_node.modifier} bind:this={child_elements[i]} />
-                        {:else if child_node.type === "leaf"}
-                            <SearchTreeLeaf {search_options} bind:this={child_elements[i]} />
-                        {/if}
-                    </div>
+                    <div class="child-line"></div>
+                    {#if child_node.type === "modifier"}
+                        <SearchTreeModifier
+                                child_nodes={child_node.data}
+                                {search_options}
+                                bind:modifier={child_node.modifier}
+                                bind:this={child_elements[i]}
+                                remove_self_function={() => remove_child(i)}
+                        />
+                    {:else if child_node.type === "leaf"}
+                        <SearchTreeLeaf
+                                {search_options}
+                                bind:this={child_elements[i]}
+                                remove_self_function={() => remove_child(i)}
+                        />
+                    {/if}
                 </div>
             </div>
         {/each}
@@ -240,6 +251,10 @@
         display: none;
 
         font-size: 0.75em;
+
+        position: absolute;
+        left: 0;
+        transform: translateX(-120%);
     }
 
     .add-modifier-button {
@@ -253,9 +268,10 @@
 
     .parent-container:hover > .add-parent-button {
         display: block;
-        position: absolute;
-        left: 0;
-        transform: translateX(-120%);
+    }
+
+    .parent-container:hover > .remove-child-button {
+        display: block;
     }
 
     .parent-container::before {
@@ -271,17 +287,13 @@
     .remove-child-button {
         font-size: 0.75em;
         position: absolute;
-
-        transform: translate(25%, 25%);
+        left: 0;
+        transform: translate(-120%, 75%);
 
         z-index: 1;
 
         padding: 0;
 
         display: none;
-    }
-
-    .child-node-container:hover > .before-child > .remove-child-button {
-        display: block;
     }
 </style>
