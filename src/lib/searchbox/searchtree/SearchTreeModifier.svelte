@@ -17,6 +17,7 @@
     export let remove_self_function: (() => void) | null = null;
 
     export async function create_query() : Promise<any> {
+        // @ts-ignore (We filter out nulls, but TypeScript doesn't know that)
         let promised_subqueries = child_elements.filter((child) => child != null).map(async (child) => await child.create_query());
         let unfiltered_subqueries = await Promise.all(promised_subqueries);
         let subqueries = unfiltered_subqueries.filter((query) => query != null);
