@@ -36,6 +36,8 @@
 //   }
 // }
 
+import type { MessageModel } from "inbucket-js-client";
+
 Cypress.Commands.add('getBySel', (selector, ...args) => {
   return cy.get(`[data-cy=${selector}]`, ...args)
 })
@@ -45,7 +47,6 @@ Cypress.Commands.add('getBySelLike', (selector, ...args) => {
 })
 
 Cypress.Commands.add("resetDatabase", () => {
-    console.log(Cypress.env("RESET_DB_URL"));
     cy.request(
       "POST",
       Cypress.env("RESET_DB_URL"),
@@ -55,10 +56,33 @@ Cypress.Commands.add("resetDatabase", () => {
     );
 })
 
-declare namespace Cypress {
-    interface Chainable<Subject = any> {
-        getBySel(selector: string, ...args: any[]): Chainable<any>;
-        getBySelLike(selector: string, ...args: any[]): Chainable<any>;
-        resetDatabase(): Chainable<any>;
+Cypress.Commands.add("register", (username, email, password) => {
+    cy.visit("/accounts/register");
+    cy.get("input[name='username']").type(username);
+    cy.get("input[name='email']").type(email);
+    cy.get("input[name='password']").type(password);
+    cy.getBySel("register").click();
+
+    cy.task("get_latest_email", email).then((email: MessageModel) => {
+        cy.visit(email.body.text.match(/http:\/\/\S+/)[0]);
+    });
+})
+
+Cypress.Commands.add("login", (username, password) => {
+    cy.visit("/accounts/login");
+    cy.get("input[name='username']").type(username);
+    cy.get("input[name='password']").type(password);
+    cy.getBySel("login").click();
+})
+
+declare global {
+    namespace Cypress {
+        interface Chainable<Subject = any> {
+            getBySel(selector: string, ...args: any[]): Chainable<any>;
+            getBySelLike(selector: string, ...args: any[]): Chainable<any>;
+            resetDatabase(): Chainable<any>;
+            register(username: string, email: string, password: string): Chainable<any>;
+            login(username: string, password: string): Chainable<any>;
+        }
     }
 }

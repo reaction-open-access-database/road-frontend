@@ -1,17 +1,21 @@
 import { MessageModel } from "inbucket-js-client";
 
 describe("User Registration and Login", function () {
-    beforeEach(() => {
+    before(() => {
         cy.resetDatabase();
-        cy.task("reset_mailbox", "testuser@example.com");
     });
 
     it("User can register", () => {
+        const email = "testuser1@example.com";
+        const username = "testuser1";
+
+        cy.task("reset_mailbox", email);
+
         cy.visit("/accounts/register");
 
         // Register a new user
-        cy.get("input[name='username']").type("testuser");
-        cy.get("input[name='email']").type("testuser@example.com");
+        cy.get("input[name='username']").type(username);
+        cy.get("input[name='email']").type(email);
         cy.get("input[name='password']").type("correctHorseBatteryStaple");
         cy.getBySel("register").click();
 
@@ -21,7 +25,7 @@ describe("User Registration and Login", function () {
         cy.getBySel("message").should("contain", "verification email");
 
         // Check that the verification email is sent
-        cy.task("get_latest_email", "testuser@example.com").then((email: MessageModel) => {
+        cy.task("get_latest_email", email).then((email: MessageModel) => {
             // expect(email.subject).to.contain("Verify your email address");
             expect(email.subject).to.contain("Confirm Your E-mail Address");
             expect(email.body.text).to.contain("register");
@@ -32,10 +36,21 @@ describe("User Registration and Login", function () {
     });
 
     it("User can login", () => {
+        const email = "testuser2@example.com";
+        const username = "testuser2";
+        const password = "correctHorseBatteryStaple";
 
+        cy.task("reset_mailbox", email);
+
+        cy.register(username, email, password);
+
+        cy.visit("/accounts/login");
+        cy.get("input[name='username']").type(username);
+        cy.get("input[name='password']").type(password);
+        cy.getBySel("login").click();
     });
 
-    it("User can logout", () => {
-
-    });
+    // it("User can logout", () => {
+    //
+    // });
 });

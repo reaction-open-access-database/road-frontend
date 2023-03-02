@@ -52,7 +52,7 @@
 
         <p id="issue">{@html error_string}</p>
 
-        <button>
+        <button data-cy="login">
             Login
         </button>
     </form>
